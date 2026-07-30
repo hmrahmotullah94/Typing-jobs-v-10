@@ -989,6 +989,7 @@ spellcheck="false"></textarea>
         <div class="stat-box">সময় <span id="st-time">০</span></div>
         <div class="stat-box">WPM <span id="st-wpm">০</span></div>
         <div class="stat-box">নির্ভুলতা <span id="st-acc">১০০%</span></div>
+        <div class="stat-box">ভুল <span id="st-wrong">০%</span></div>
     </div>
 </div>
 
@@ -1645,6 +1646,9 @@ wrongCount++;
 
         if(typed.length > 0) {
             document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
+            // 👇 লাইভ ভুল % দেখানোর লাইন
+    document.getElementById('st-wrong').innerText = Math.round((wrongCount/typed.length)*100) + "%";
+        
         }
 
         if(typed.length >= chars.length && !done && chars.length > 0) {

@@ -1,68 +1,39 @@
 {
-  "name": "Typing Jobs Pro v10.0",
-  "short_name": "Typing Jobs Pro",
-
-  "description": "Bangla and English typing practice application made by Rahmotullah",
-
-  "lang": "bn-BD",
-
+  "name": "Type Rahmot - টাইপিং প্র্যাকটিস",
+  "short_name": "Type Rahmot",
+  "description": "বাংলা ও ইংরেজি টাইপিং অনুশীলন করার এবং স্পিড বাড়ানোর জন্য একটি সহজ ও অফলাইন টাইপিং অ্যাপ।",
   "start_url": "./index.html",
-
-  "scope": "./",
-
   "display": "standalone",
-
-  "orientation": "landscape",
-
-  "background_color": "#e0e4e8",
-
-  "theme_color": "#1a237e",
-
-
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "bn",
+  "categories": ["education", "productivity", "utilities"],
   "icons": [
-
     {
-      "src": "icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
-
-
     {
-      "src": "icon-512.png",
+      "src": "./icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    }
-
-  ],
-
-
-  "categories": [
-
-    "education",
-    "productivity",
-    "typing"
-
-  ],
-
-
-  "shortcuts": [
-
+      "purpose": "any"
+    },
     {
-
-      "name": "Typing Practice",
-
-      "short_name": "Practice",
-
-      "url": "./index.html"
-
+      "src": "./icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-
-  ],
-
-
-  "prefer_related_applications": false
-
+  ]
 }

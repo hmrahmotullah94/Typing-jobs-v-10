@@ -72,7 +72,7 @@
         select, input, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; }
         button, select, textarea, input { font-size: 16px; }
         button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-        .pwa-bar { position: fixed; left: max(20px, env(safe-area-inset-left)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 1200; display: flex; align-items: center; gap: 10px; max-width: min(420px, calc(100vw - 40px)); padding: 10px 12px; color: #fff; background: rgba(18, 18, 18, .92); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; box-shadow: 0 12px 35px rgba(0,0,0,.28); backdrop-filter: blur(12px); }
+        .pwa-bar { position: flex; left: max(20px, env(safe-area-inset-left)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 1200; display: flex; align-items: center; gap: 10px; max-width: min(420px, calc(100vw - 40px)); padding: 10px 12px; color: #fff; background: rgba(18, 18, 18, .92); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; box-shadow: 0 12px 35px rgba(0,0,0,.28); backdrop-filter: blur(12px); }
         .pwa-bar[hidden] { display: none; }
         .pwa-bar button { flex: 0 0 auto; border: 0; color: #071d22; background: #7ee7f3; font-weight: 700; cursor: pointer; }
         .pwa-status { font-size: 13px; line-height: 1.35; }

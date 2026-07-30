@@ -1,0 +1,68 @@
+{
+  "name": "Typing Jobs Pro v10.0",
+  "short_name": "Typing Jobs Pro",
+
+  "description": "Bangla and English typing practice application made by Rahmotullah",
+
+  "lang": "bn-BD",
+
+  "start_url": "./index.html",
+
+  "scope": "./",
+
+  "display": "standalone",
+
+  "orientation": "landscape",
+
+  "background_color": "#e0e4e8",
+
+  "theme_color": "#1a237e",
+
+
+  "icons": [
+
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+
+
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+
+  ],
+
+
+  "categories": [
+
+    "education",
+    "productivity",
+    "typing"
+
+  ],
+
+
+  "shortcuts": [
+
+    {
+
+      "name": "Typing Practice",
+
+      "short_name": "Practice",
+
+      "url": "./index.html"
+
+    }
+
+  ],
+
+
+  "prefer_related_applications": false
+
+}

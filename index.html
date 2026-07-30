@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+<meta name="theme-color" content="#1a237e">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+<title>
+Typing Jobs Pro v10.0
+</title>
+
+
+<!-- PWA -->
+
+<link rel="manifest" href="manifest.json">
+
+
+<!-- Fonts -->
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+<!-- CSS -->
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================
+PWA INSTALL BAR
+========================== -->
+
+
+<div class="pwa-bar" id="pwaBar">
+
+<button id="installButton">
+অ্যাপ ইনস্টল
+</button>
+
+<span id="pwaStatus">
+Typing Jobs Pro
+</span>
+
+</div>
+
+
+
+
+
+<!-- ==========================
+RESULT MODAL
+========================== -->
+
+
+<div id="modal">
+
+
+<div class="modal-body">
+
+
+<h2>
+Complete!
+</h2>
+
+
+<div id="res-data"></div>
+
+
+<button id="closeModal">
+OK
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ==========================
+SETTING BUTTON
+========================== -->
+
+
+<button 
+class="toggle-btn"
+id="settingBtn">
+
+⚙
+
+</button>
+
+
+
+
+
+
+
+<!-- ==========================
+SETTING SIDEBAR
+========================== -->
+
+
+<div class="sidebar" id="side">
+
+
+<h3>
+Settings
+</h3>
+
+
+
+<label>
+Font Style
+</label>
+
+
+<select id="f-style">
+
+<option value="Nikosh">
+Nikosh
+</option>
+
+<option value="SolaimanLipi">
+SolaimanLipi
+</option>
+
+<option value="Hind Siliguri">
+Hind Siliguri
+</option>
+
+<option value="Noto Sans Bengali">
+Noto Sans Bengali
+</option>
+
+</select>
+
+
+
+
+
+
+<label>
+Font Size
+</label>
+
+
+<input 
+type="number"
+id="f-size"
+value="22">
+
+
+
+
+
+<label>
+Theme
+</label>
+
+
+<select id="t-style">
+
+<option value="light">
+Light
+</option>
+
+<option value="dark">
+Dark
+</option>
+
+</select>
+
+
+
+
+
+<hr>
+
+
+
+
+<h4>
+Custom Paragraph
+</h4>
+
+
+
+<textarea 
+id="c-in"
+placeholder="নিজের লেখা দিন...">
+</textarea>
+
+
+
+
+<button id="saveCustom">
+Save
+</button>
+
+
+
+<div id="c-list"></div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ==========================
+MAIN CONTAINER
+========================== -->
+
+
+<div class="container">
+
+
+
+
+
+<header class="branding-container">
+
+
+<h1 class="main-title">
+Typing Jobs Pro
+</h1>
+
+
+<p class="sub-branding">
+MADE BY RAHMOTULLAH, CST-6,RU
+</p>
+
+
+</header>
+
+
+
+
+
+
+
+
+<!-- ==========================
+CONTROL AREA
+========================== -->
+
+
+<div class="setup-row">
+
+
+<select id="lang">
+
+<option value="bn">
+বাংলা
+</option>
+
+<option value="en">
+English
+</option>
+
+</select>
+
+
+
+
+
+<select id="mode">
+
+<option value="words">
+Word
+</option>
+
+<option value="para">
+Paragraph
+</option>
+
+<option value="custom">
+Custom
+</option>
+
+</select>
+
+
+
+
+
+<select id="lesson-sel">
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+<div id="meaning-display"></div>
+
+
+
+
+
+
+
+<!-- ==========================
+TEST CONTROL
+========================== -->
+
+
+<div class="test-control">
+
+
+<button id="testBtn" class="test-btn">
+
+▶ Start Test
+
+</button>
+
+
+
+<button id="resetBtn" class="reset-btn">
+
+↻ Reset
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<div id="testStatus">
+
+Typing Test Ready
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ==========================
+TYPING AREA
+========================== -->
+
+
+<div class="typing-area">
+
+
+
+<div id="display-text">
+
+লোড হচ্ছে...
+
+</div>
+
+
+
+
+
+<textarea
+
+id="input-area"
+
+placeholder="টাইপ শুরু করুন..."
+
+autocomplete="off"
+
+spellcheck="false">
+
+</textarea>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ==========================
+STATISTICS
+========================== -->
+
+
+<div class="stats">
+
+
+<div class="stat-box">
+
+সময়
+
+<span id="st-time">
+0
+</span>
+
+</div>
+
+
+
+
+<div class="stat-box">
+
+WPM
+
+<span id="st-wpm">
+0
+</span>
+
+</div>
+
+
+
+
+
+<div class="stat-box">
+
+Accuracy
+
+<span id="st-acc">
+100%
+</span>
+
+</div>
+
+
+
+
+
+<div class="stat-box">
+
+Wrong
+
+<span id="st-wrong">
+0
+</span>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+<!-- CONTAINER END -->
+
+
+
+
+
+
+
+<!-- JAVASCRIPT ONLY ONCE -->
+
+
+<script src="app.js" defer></script>
+
+
+
+</body>
+
+</html>

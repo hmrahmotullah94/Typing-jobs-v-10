@@ -1750,6 +1750,57 @@ wrongCount++;
     }
 
 } 
+    let deferredPrompt;
+const pwaBar = document.getElementById('pwaBar');
+const installButton = document.getElementById('installButton');
+
+// শুরুতে বাটন লুকিয়ে রাখুন (যতক্ষণ না ব্রাউজার নিশ্চিত করে যে অ্যাপটি ইনস্টল করা সম্ভব)
+if (pwaBar) {
+    pwaBar.hidden = true;
+}
+
+// ১. অ্যাপটি ইনস্টল করার উপযোগী হলে এই ইভেন্ট ট্রিগার হবে
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // ইতিমধ্যে অ্যাপ হিসেবে রান না হলে বাটন দেখাবে
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+        if (pwaBar) pwaBar.hidden = false;
+    }
+});
+
+// ২. ইনস্টল বাটনে ক্লিক করলে প্রম্পট দেখাবে এবং পরে বাটন লুকিয়ে দেবে
+if (installButton) {
+    installButton.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+
+        // ব্রাউজারের ইনস্টল পপআপ দেখানো
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+
+        if (outcome === 'accepted') {
+            console.log('User accepted the PWA install');
+        }
+
+        deferredPrompt = null;
+        // ক্লিক করার পর বাটন হাইড করা
+        if (pwaBar) pwaBar.hidden = true;
+    });
+}
+
+// ৩. ইনস্টল সম্পূর্ণ হয়ে গেলে নিশ্চিতভাবে বাটন লুকিয়ে রাখা
+window.addEventListener('appinstalled', () => {
+    if (pwaBar) pwaBar.hidden = true;
+    deferredPrompt = null;
+    console.log('PWA completely installed!');
+});
+
+// ৪. অ্যাপটি যদি ইতিমধ্যে ইনস্টলড থাকে এবং অ্যাপ হিসেবে ওপেন করা হয়
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (pwaBar) pwaBar.hidden = true;
+}
+
     </script>
 
 

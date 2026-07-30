@@ -1,510 +1,1758 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-
-<meta name="theme-color" content="#1a237e">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-
-<title>
-Typing Jobs Pro v10.0
-</title>
-
-
-<!-- PWA -->
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a237e">
+    <meta name="description" content="বাংলা ও ইংরেজি টাইপিং অনুশীলনের ইনস্টলযোগ্য, অফলাইন-সক্ষম অ্যাপ।">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Type Rahmot">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <title>Typing Jobs</title>
+    <style>
+        :root { --primary: #1a237e; --secondary: #b71c1c; --accent: #00b8d4; --bg: #e0e4e8; --card-bg: #ffffff; --text-main: #1c1e21; --display-bg: #121212; --display-text: #eceff1; }
+        [data-theme="midnight"] { --primary: #3949ab; --bg: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; --display-bg: #020c1b; --display-text: #64ffda; }
+        [data-theme="forest"] { --primary: #05e8e5; --bg: #1b5e20; --card-bg: #2e7d32; --text-main: #e8f5e9; --display-bg: #002400; --display-text: #a5d6a7; }
+        [data-theme="dark"] { --primary: #424242; --bg: #121212; --card-bg: #1e1e1e; --text-main: #ffffff; --display-bg: #000000; --display-text: #00ff00; }
+        body { margin: 0; min-height: 100vh; padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); font-family: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif; background: var(--bg); color: var(--text-main); transition: background-color 0.4s, color 0.4s; box-sizing: border-box; }
+        .container { max-width: 950px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .branding-container { text-align: center; margin-bottom: 25px; }
+        .main-title { font-size: 32px; font-weight: 800; color: var(--primary); margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+        .sub-branding { font-size: 14px; color: var(--accent); font-weight: bold; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .sub-branding a { display: inline-grid; place-items: center; color: #1877F2; text-decoration: none; }
+        .sub-branding svg { width: 22px; height: 22px; fill: currentColor; }
+        #display-text { position: relative;
+    background: var(--display-bg); 
+    padding: 25px; 
+    border-radius: 12px; 
+    font-size: 22px; 
+    line-height: 1.8; 
+    color: var(--display-text); 
+    border-left: 8px solid var(--accent); 
+    min-height: 180px;
+    max-height: 260px;
+    overflow-y: auto;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+        .char { position: relative; display: inline; border-bottom: 2px solid transparent; white-space: pre-wrap; }
+        .correct { color: #4caf50; }
+        .wrong { color: #fff; background: #ff1744; border-radius: 4px; }
+        .current { border-bottom: 3px solid var(--accent); background: rgba(0, 184, 212, 0.3); }
+        textarea#input-area { 
+    width:100%;
+    height:180px;
+    padding:20px;
+    border:3px solid var(--primary);
+    border-radius:12px;
+    font-size:22px;
+    line-height:1.8;
+    outline:none;
+    resize:none;
+    background:var(--card-bg);
+    color:var(--text-main);
+    box-sizing:border-box;
+}
+        .sidebar { position: fixed; top: 0; right: -350px; width: 300px; height: 100%; background: var(--card-bg); box-shadow: -10px 0 30px rgba(0,0,0,0.3); transition: 0.4s; z-index: 1000; padding: 25px; overflow-y: auto; }
+        .sidebar.active { right: 0; }
+        .toggle-btn { position: fixed; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); width: 45px; height: 45px; padding: 0; border: 0; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-size: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+        .stats { display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; }
+        .stat-box { flex: 1; background: var(--primary); color: white; padding: 10px; border-radius: 10px; text-align: center; }
+        .stat-box span { display: block; font-size: 20px; font-weight: bold; color: #ffeb3b; }
+        #meaning-display { text-align: center; font-size: 20px; font-weight: bold; color: var(--secondary); margin-bottom: 10px; min-height: 30px; }
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-body { background: var(--card-bg); padding: 35px; border-radius: 20px; text-align: center; border: 5px solid var(--primary); width: 320px; }
+        .setup-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        select, input, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; }
+        button, select, textarea, input { font-size: 16px; }
+        button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+        .pwa-bar { position: fixed; left: max(20px, env(safe-area-inset-left)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 1200; display: flex; align-items: center; gap: 10px; max-width: min(420px, calc(100vw - 40px)); padding: 10px 12px; color: #fff; background: rgba(18, 18, 18, .92); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; box-shadow: 0 12px 35px rgba(0,0,0,.28); backdrop-filter: blur(12px); }
+        .pwa-bar[hidden] { display: none; }
+        .pwa-bar button { flex: 0 0 auto; border: 0; color: #071d22; background: #7ee7f3; font-weight: 700; cursor: pointer; }
+        .pwa-status { font-size: 13px; line-height: 1.35; }
+        @media (max-width: 640px) {
+            body { padding: max(70px, env(safe-area-inset-top)) 10px max(88px, env(safe-area-inset-bottom)); }
+            .container { padding: 18px 14px; border-radius: 14px; }
+            .main-title { font-size: 25px; letter-spacing: 1px; }
+            .sub-branding { font-size: 11px; }
+            .setup-row { display: grid; grid-template-columns: 1fr 1fr; }
+            #lesson-sel { grid-column: 1 / -1; }
+            #display-text {
+            position: relative;
+            padding: 18px 14px; font-size: 23px; line-height: 1.65; }
+            textarea#input-area { height: 115px; font-size: 20px; }
+            .stats { gap: 6px; }
+            .stat-box { padding: 8px 4px; font-size: 13px; }
+            .stat-box span { font-size: 17px; }
+            .sidebar { width: min(150px, calc(100vw - 70px)); padding: 22px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+        }
+        /* ===============================
+ LANDSCAPE
+   TYPING AREA RESPONSIVE SYSTEM
+   Landscape: Paragraph + Input Side by Side
+   Portrait: Stack Layout
+========================================== */
 
 
-<!-- Fonts -->
+/* Default Layout */
+.typing-area{
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
 
 
-<!-- CSS -->
+/* Paragraph Box */
 
-<link rel="stylesheet" href="style.css">
+#display-text{ position: relative;
+
+    width:100%;
+
+    min-height:120px;
+
+    max-height:130px;
+
+    overflow-y:auto;
+
+    box-sizing:border-box;
+
+}
 
 
+
+/* Input Box */
+
+textarea#input-area{
+
+    width:100%;
+
+    min-height:120px;
+
+    box-sizing:border-box;
+
+}
+
+
+
+
+
+/* ==========================================
+   MOBILE LANDSCAPE + TABLET + DESKTOP
+========================================== */
+
+
+@media (orientation:landscape){
+
+
+    .typing-area{
+
+        display:grid;
+
+        grid-template-columns:1fr 1fr;
+
+        gap:15px;
+
+        align-items:stretch;
+
+        width:100%;
+
+    }
+
+
+
+    #display-text{ position: relative;
+
+        min-height:120px; !important;
+
+        max-height:130px; !important;
+
+        font-size:20px; !important;
+
+        padding:18px; !important;
+
+        overflow-y:auto;
+
+    }
+
+
+
+    textarea#input-area{
+
+        height:120px; !important;
+
+        min-height:120px; !important;
+
+        font-size:20px; !important;
+
+        padding:18px; !important;
+
+    }
+
+
+}
+
+
+
+
+
+/* ==========================================
+   SMALL PORTRAIT MOBILE
+========================================== */
+
+
+@media (max-width:699px) and (orientation:portrait){
+
+
+    .typing-area{
+
+        display:block;
+
+    }
+
+
+
+    #display-text{ position: relative;
+
+        margin-bottom:15px;
+
+        min-height:160px;
+
+        font-size:21px;
+
+    }
+
+
+
+    textarea#input-area{
+
+        height:130px;
+
+        min-height:120px;
+
+        font-size:20px;
+
+    }
+
+
+}
+
+
+
+
+
+/* ==========================================
+   LARGE SCREEN OPTIMIZATION
+========================================== */
+
+
+@media (min-width:1000px){
+
+
+    .typing-area{
+
+        gap:25px;
+
+    }
+
+
+
+    #display-text{ position: relative;
+
+        font-size:24px;
+
+    }
+
+
+
+    textarea#input-area{
+
+        font-size:24px;
+
+    }
+
+
+}
+     /* =================================
+   PWA LANDSCAPE FIX
+================================= */
+
+@media screen and (orientation: landscape){
+
+    body{
+        padding:10px;
+    }
+
+
+    .container{
+
+        max-width:none !important;
+
+        width:100% !important;
+
+        box-sizing:border-box;}
+
+:root{
+    --primary:#1a237e;
+    --secondary:#b71c1c;
+    --accent:#00b8d4;
+    --bg:#e0e4e8;
+    --card-bg:#ffffff;
+    --text-main:#1c1e21;
+    --display-bg:#121212;
+    --display-text:#eceff1;
+}
+
+
+[data-theme="midnight"]{
+    --primary:#3949ab;
+    --bg:#0a192f;
+    --card-bg:#112240;
+    --text-main:#ccd6f6;
+    --display-bg:#020c1b;
+    --display-text:#64ffda;
+}
+
+
+[data-theme="forest"]{
+    --primary:#05e8e5;
+    --bg:#1b5e20;
+    --card-bg:#2e7d32;
+    --text-main:#e8f5e9;
+    --display-bg:#002400;
+    --display-text:#a5d6a7;
+}
+
+
+[data-theme="dark"]{
+    --primary:#424242;
+    --bg:#121212;
+    --card-bg:#1e1e1e;
+    --text-main:#ffffff;
+    --display-bg:#000000;
+    --display-text:#00ff00;
+}
+
+
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+
+html,body{
+
+    width:100%;
+    min-height:100%;
+
+    margin:0;
+
+}
+
+
+body{
+
+    padding:8px;
+
+    font-family:
+    'Noto Sans Bengali',
+    'Hind Siliguri',
+    sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text-main);
+
+}
+
+
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+
+.container{
+
+    width:100%;
+
+    max-width:none;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    padding:15px;
+
+    background:var(--card-bg);
+
+    border-radius:20px;
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.15);
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+
+.branding-container{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+
+.main-title{
+
+    margin:0;
+
+    font-size:32px;
+
+    color:var(--primary);
+
+    font-weight:800;
+
+}
+
+
+.sub-branding{
+
+    margin-top:5px;
+
+    color:var(--accent);
+
+    font-weight:bold;
+
+}
+
+
+
+/* =========================
+   SELECT AREA
+========================= */
+
+
+.setup-row{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+
+select,
+button,
+input,
+textarea{
+
+    font-family:inherit;
+
+    font-size:16px;
+
+}
+
+
+
+
+
+/* =========================
+   MEANING
+========================= */
+
+
+#meaning-display{
+
+    text-align:center;
+
+    color:var(--secondary);
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    min-height:30px;
+
+}
+
+
+
+/* =========================
+   MAIN TYPING AREA
+========================= */
+
+
+.typing-area{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    1fr 1fr;
+
+
+    gap:20px;
+
+
+    width:100%;
+
+
+}
+
+
+
+
+/* Paragraph Box */
+
+
+#display-text{ position: relative;
+
+
+    background:var(--display-bg);
+
+
+    color:var(--display-text);
+
+
+    border-left:
+
+    8px solid var(--accent);
+
+
+    border-radius:15px;
+
+
+    padding:25px;
+
+
+    min-height:130px;
+
+
+    max-height:140px;
+
+
+    overflow-y:auto;
+
+
+    font-size:22px;
+
+
+    line-height:1.8;
+
+
+    word-break:break-word;
+
+
+}
+
+
+
+/* Characters */
+
+
+.char{
+
+    white-space:pre-wrap;
+
+}
+
+
+.correct{
+
+    color:#4caf50;
+
+}
+
+
+.wrong{
+
+    color:white;
+
+    background:#ff1744;
+
+}
+
+
+.current{
+
+    background:rgba(0,184,212,.3);
+
+    border-bottom:3px solid var(--accent);
+
+}
+
+
+
+
+/* Input Box */
+
+
+textarea#input-area{
+
+
+    width:100%;
+
+
+    height:130px;
+
+
+    padding:25px;
+
+
+    border:
+
+    3px solid var(--primary);
+
+
+    border-radius:15px;
+
+
+    resize:none;
+
+
+    font-size:22px;
+
+
+    line-height:1.8;
+
+
+    background:var(--card-bg);
+
+
+    color:var(--text-main);
+
+
+}
+
+
+
+
+/* =========================
+   STATS
+========================= */
+
+
+.stats{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+
+.stat-box{
+
+    flex:1;
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+}
+
+
+.stat-box span{
+
+    display:block;
+
+    font-size:22px;
+
+    color:#ffeb3b;
+
+}
+
+
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    right:-350px;
+
+    width:300px;
+
+    height:100%;
+
+
+    background:var(--card-bg);
+
+
+    padding:25px;
+
+
+    transition:.3s;
+
+
+    z-index:1000;
+
+}
+
+
+.sidebar.active{
+
+    right:0;
+
+}
+
+
+
+/* =========================
+   BUTTON
+========================= */
+
+
+.toggle-btn{
+
+    position:fixed;
+
+    top:20px;
+
+    right:20px;
+
+
+    width:45px;
+
+    height:45px;
+
+
+    border:none;
+
+    border-radius:50%;
+
+
+    background:var(--accent);
+
+    color:white;
+
+    font-size:22px;
+
+    z-index:1200;
+
+}
+
+
+
+
+
+/* =========================
+   PWA INSTALL BAR
+========================= */
+
+
+.pwa-bar{
+
+    position:fixed;
+
+    bottom:20px;
+
+    left:20px;
+
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+
+    padding:10px 15px;
+
+
+    background:#121212;
+
+    color:white;
+
+
+    border-radius:15px;
+
+
+    z-index:2000;
+
+}
+
+
+
+
+/* =========================
+   PORTRAIT MODE
+========================= */
+
+
+@media screen and (orientation:portrait){
+
+
+    body{
+
+        padding:10px;
+
+    }
+
+
+    .typing-area{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    textarea#input-area{
+
+        height:140px;
+
+        font-size:20px;
+
+    }
+
+
+    #display-text{ position: relative;
+
+        min-height:170px;
+
+        font-size:20px;
+
+    }
+
+
+    .setup-row{
+
+        display:grid;
+
+        grid-template-columns:1fr 1fr;
+
+    }
+
+}
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+
+@media(max-width:500px){
+
+
+    .container{
+
+        padding:15px;
+
+        border-radius:12px;
+
+    }
+
+
+    .main-title{
+
+        font-size:25px;
+
+    }
+
+
+}
+    </style>
 </head>
-
-
 <body>
-
-
-<!-- ==========================
-PWA INSTALL BAR
-========================== -->
-
-
 <div class="pwa-bar" id="pwaBar">
-
 <button id="installButton">
 অ্যাপ ইনস্টল
 </button>
 
 <span id="pwaStatus">
-Typing Jobs Pro
+ফোন বা কম্পিউটারে অ্যাপ হিসেবে রাখুন
 </span>
 
 </div>
-
-
-
-
-
-<!-- ==========================
-RESULT MODAL
-========================== -->
 
 
 <div id="modal">
-
-
-<div class="modal-body">
-
-
-<h2>
-Complete!
-</h2>
-
-
-<div id="res-data"></div>
-
-
-<button id="closeModal">
-OK
-</button>
-
-
+    <div class="modal-body">
+        <h2 style="color:var(--accent)">কমপ্লিট!</h2>
+        <div id="res-data" style="margin:15px 0; font-size:20px; color: var(--text-main);"></div>
+        <hr>
+        <p style="font-weight: bold; color: var(--secondary);">Type Enter for next & Esc for clearing</p>
+    </div>
 </div>
 
-
-</div>
-
-
-
-
-
-
-
-<!-- ==========================
-SETTING BUTTON
-========================== -->
-
-
-<button 
-class="toggle-btn"
-id="settingBtn">
-
-⚙
-
-</button>
-
-
-
-
-
-
-
-<!-- ==========================
-SETTING SIDEBAR
-========================== -->
-
+<button class="toggle-btn" type="button" aria-label="সেটিংস খুলুন বা বন্ধ করুন" aria-controls="side" onclick="document.getElementById('side').classList.toggle('active')">⚙</button>
 
 <div class="sidebar" id="side">
+    <h3 style="text-align: center;">সেটিংস</h3>
+    <label>ফন্ট স্টাইল:</label>
+    <select id="f-style" onchange="updateFStyle(this.value)" style="width:100%; margin-bottom:15px;">
+        <option value="'Nikosh'">Nikosh (Standard)</option>
+        <option value="'SolaimanLipi'">SolaimanLipi</option>
+        <option value="'Hind Siliguri'">Hind Siliguri</option>
+        <option value="'Noto Sans Bengali'">Noto Sans</option>
+        <option value="'Tiro Bangla'">Tiro Bangla</option>
+    </select>
+    <label>ফন্ট সাইজ (px):</label>
+    <input type="number" id="f-size" value="28" onchange="updateFSize(this.value)" style="width:92%; margin-bottom:15px;">
+    <label>থিম পরিবর্তন:</label>
+    <select id="t-style" onchange="updateTheme(this.value)" style="width:100%; margin-bottom:15px;">
+        <option value="light">Light Mode</option>
+        <option value="midnight">Midnight Blue</option>
+        <option value="forest">Forest Green</option>
+        <option value="dark">Pure Dark</option>
+    </select>
+    
+    <hr>
 
+<label>টাইপিং টেস্ট মোড:</label>
 
-<h3>
-Settings
-</h3>
-
-
-
-<label>
-Font Style
-</label>
-
-
-<select id="f-style">
-
-<option value="Nikosh">
-Nikosh
-</option>
-
-<option value="SolaimanLipi">
-SolaimanLipi
-</option>
-
-<option value="Hind Siliguri">
-Hind Siliguri
-</option>
-
-<option value="Noto Sans Bengali">
-Noto Sans Bengali
-</option>
-
-</select>
-
-
-
-
-
-
-<label>
-Font Size
-</label>
-
-
-<input 
-type="number"
-id="f-size"
-value="22">
-
-
-
-
-
-<label>
-Theme
-</label>
-
-
-<select id="t-style">
-
-<option value="light">
-Light
-</option>
-
-<option value="dark">
-Dark
-</option>
-
-</select>
-
-
-
-
-
-<hr>
-
-
-
-
-<h4>
-Custom Paragraph
-</h4>
-
-
-
-<textarea 
-id="c-in"
-placeholder="নিজের লেখা দিন...">
-</textarea>
-
-
-
-
-<button id="saveCustom">
-Save
+<button id="testBtn" 
+onclick="toggleTestMode()"
+style="width:100%; 
+background:#00897b;
+color:white;
+font-weight:bold;">
+Test OFF
 </button>
-
-
-
-<div id="c-list"></div>
-
-
-
+    <hr>
+    <label>কাস্টম প্যারাগ্রাফ সেভ:</label>
+    <textarea id="c-in" style="width:100%; height:70px; margin-top:5px;" placeholder="নিজের টেক্সট এখানে দিন..."></textarea>
+    <button onclick="saveC()" style="width:100%; margin-top:8px; background:var(--primary); color:white; border:none; cursor:pointer; font-weight:bold;">সেভ করুন</button>
+    <div id="c-list" style="margin-top:10px; max-height:150px; overflow-y:auto;"></div>
 </div>
-
-
-
-
-
-
-
-
-
-<!-- ==========================
-MAIN CONTAINER
-========================== -->
-
 
 <div class="container">
-
-
-
-
-
-<header class="branding-container">
-
-
-<h1 class="main-title">
-Typing Jobs Pro
-</h1>
-
-
-<p class="sub-branding">
-MADE BY RAHMOTULLAH, CST-6,RU
-</p>
-
-
-</header>
-
-
-
-
-
-
-
-
-<!-- ==========================
-CONTROL AREA
-========================== -->
-
-
-<div class="setup-row">
-
-
-<select id="lang">
-
-<option value="bn">
-বাংলা
-</option>
-
-<option value="en">
-English
-</option>
-
-</select>
-
-
-
-
-
-<select id="mode">
-
-<option value="words">
-Word
-</option>
-
-<option value="para">
-Paragraph
-</option>
-
-<option value="custom">
-Custom
-</option>
-
-</select>
-
-
-
-
-
-<select id="lesson-sel">
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-<div id="meaning-display"></div>
-
-
-
-
-
-
-
-<!-- ==========================
-TEST CONTROL
-========================== -->
-
-
-<div class="test-control">
-
-
-<button id="testBtn" class="test-btn">
-
-▶ Start Test
-
-</button>
-
-
-
-<button id="resetBtn" class="reset-btn">
-
-↻ Reset
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-<div id="testStatus">
-
-Typing Test Ready
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- ==========================
-TYPING AREA
-========================== -->
-
-
-<div class="typing-area">
-
-
+    <div class="branding-container">
+        <h1 class="main-title">Typing Jobs</h1>
+        <div class="sub-branding">MADE BY RAHMOTULLAH, CST-6,RU <a href="https://www.facebook.com/rahmotullah.ru.bd" target="_blank" rel="noopener noreferrer" aria-label="ফেসবুক প্রোফাইল"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.25 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.78-3.91 1.09 0 2.23.2 2.23.2v2.46H15.2c-1.24 0-1.63.77-1.63 1.56v1.9h2.78l-.44 2.91h-2.34V22C18.34 21.25 22 17.08 22 12.06Z"/></svg></a></div>
+    </div>
+    <div class="setup-row">
+        <select id="lang" onchange="initApp()" style="flex:1;"><option value="bn">বাংলা</option><option value="en" selected>English</option></select>
+        <select id="mode" onchange="initApp()" style="flex:1;"><option value="words">শব্দ (৫ বার)</option><option value="para">বাক্য</option><option value="custom">কাস্টম(Go setting to add)</option></select>
+        <select id="lesson-sel" onchange="loadLesson()" style="flex:2;"></select>
+    </div>
+    <div id="meaning-display"></div>
+   <div class="typing-area">
 
 <div id="display-text">
-
 লোড হচ্ছে...
-
 </div>
 
 
-
-
-
-<textarea
-
-id="input-area"
-
-placeholder="টাইপ শুরু করুন..."
-
-autocomplete="off"
-
-spellcheck="false">
-
-</textarea>
-
-
+<textarea id="input-area" 
+placeholder="টাইপ শুরু করুন... (Enter = Result/Next)" 
+autocomplete="off" 
+spellcheck="false"></textarea>
 
 </div>
-
-
-
-
-
-
-
-
-
-<!-- ==========================
-STATISTICS
-========================== -->
-
-
-<div class="stats">
-
-
-<div class="stat-box">
-
-সময়
-
-<span id="st-time">
-0
-</span>
-
+    <div class="stats">
+        <div class="stat-box">সময় <span id="st-time">০</span></div>
+        <div class="stat-box">WPM <span id="st-wpm">০</span></div>
+        <div class="stat-box">নির্ভুলতা <span id="st-acc">১০০%</span></div>
+    </div>
 </div>
 
+<script>
+    const meanings = {
+        "Accommodation": "আবাসন", "Achievement": "অর্জন", "Acquaintance": "পরিচিতি", "Aggressive": "আক্রমণাত্মক", "Amateur": "অপেশাদার",
+        "Appearance": "উপস্থিতি", "Argument": "যুক্তি", "Beginning": "শুরু", "Believe": "বিশ্বাস করা", "Business": "ব্যবসা",
+        "Calendar": "দিনপঞ্জিকা", "Cemetery": "গোরস্থান", "Colleague": "সহকর্মী", "Committee": "কমিটি", "Conscience": "বিবেক",
+        "Definite": "নিশ্চিত", "Discipline": "শৃঙ্খল", "Embarrass": "বিব্রত করা", "Environment": "পরিবেশ", "Exaggerate": "অতিরঞ্জিত করা",
+        "Experience": "অভিজ্ঞতা", "Foreign": "বিদেশী", "Gauge": "মাপযন্ত্র", "Grateful": "কৃতজ্ঞ", "Guarantee": "নিশ্চয়তা",
+        "Hierarchy": "স্তরবিন্যাস", "Ignorance": "অজ্ঞতা", "Immediate": "তাত্ক্ষণিক", "Independent": "স্বাধীন", "Judgment": "বিচার",
+        "Knowledge": "জ্ঞান", "Liaison": "যোগাযোগ", "Library": "গ্রন্থাগার", "Maintenance": "রক্ষণাবেক্ষণ", "Millennium": "সহস্রাব্দ",
+        "Necessary": "প্রয়োজনীয়", "Neighbor": "প্রতিবেশী", "Noticeable": "লক্ষণীয়", "Occasion": "উপলক্ষ", "Occurrence": "ঘটনা",
+        "Parallel": "সমান্তরাল", "Personnel": "কর্মীদল", "Possession": "দখল", "Privilege": "সুবিধা", "Queue": "লাইন",
+        "Receipt": "রশিদ", "Recommend": "সুপারিশ করা", "Referred": "উল্লিখিত", "Religious": "ধর্মীয়", "Restaurant": "রেস্তোরাঁ",
+        "Rhythm": "ছন্দ", "Schedule": "সময়সূচী", "Separate": "আলাদা", "Siege": "অবরোধ", "Success": "সাফল্য",
+        "Supersede": "স্থলাভিষিক্ত করা", "Tomorrow": "আগামীকাল", "Twelfth": "দ্বাদশ", "Until": "পর্যন্ত", "Vacuum": "শূন্যস্থান",
+        "Weather": "আবহাওয়া", "Weird": "অদ্ভুত", "Absence": "অনুপস্থিতি", "Accidentally": "দুর্ঘটনাজনিত", "Acknowledge": "স্বীকার করা",
+        "Actually": "আসলে", "Advice": "উপদেশ", "Advise": "পরামর্শ দেওয়া", "All right": "ঠিক আছে", "Analyze": "বিশ্লেষণ করা",
+        "Annual": "বার্ষিক", "Apparent": "স্পষ্ট", "Appropriate": "যথাযথ", "Arctic": "মেরু অঞ্চল", "Assistant": "সহকারী",
+        "Athlete": "ক্রীড়াবিদ", "Attendance": "উপস্থিতি", "Autumn": "শরৎকাল", "Background": "পটভূমি", "Balloon": "বেলুন",
+        "Basically": "মূলত", "Beautiful": "সুন্দর", "Becoming": "মানানসই", "Before": "আগে", "Behavior": "আচরণ",
+        "Beneficial": "উপকারী", "Benefit": "সুবিধা", "Bicycle": "বাইসাইকেল", "Biscuit": "বিস্কুট", "Boundary": "সীমানা",
+        "Breath": "নিশ্বাস", "Breathe": "নিশ্বাস নেওয়া", "Brief": "সংক্ষিপ্ত", "Brilliant": "মেধাবী", "Building": "ভবন",
+        "Buried": "সমাহিত", "Busy": "ব্যস্ত", "Cafeteria": "ক্যাফেটেরিয়া", "Candidate": "প্রার্থী", "Captain": "অধিনায়ক",
+        "Career": "পেশা", "Careful": "সতর্ক", "Carrying": "বহন করা", "Category": "বিভাগ", "Ceiling": "ছাদ",
+        "Challenge": "চ্যালেঞ্জ", "Chamber": "কক্ষ", "Champion": "বিজয়ী", "Character": "চরিত্র", "Chief": "প্রধান",
+        "Children": "শিশুরা", "Chocolate": "চকলেট", "Choice": "পছন্দ", "Choose": "পছন্দ করা", "Circuit": "বর্তনী",
+        "Classical": "ধ্রুপদী", "Clean": "পরিষ্কার", "Clear": "স্বচ্ছ", "Climb": "আরোহণ", "Clothes": "পোশাক",
+        "Coach": "প্রশিক্ষক", "Coffee": "কফি", "Collect": "সংগ্রহ করা", "College": "কলেজ", "Column": "স্তম্ভ",
+        "Coming": "আসছে", "Commercial": "বাণিজ্যিক", "Commit": "প্রতিজ্ঞাবদ্ধ হওয়া", "Committed": "নিষ্ঠাবান", "Common": "সাধারণ",
+        "Compare": "তুলনা করা", "Compel": "বাধ্য করা", "Competition": "প্রতিযোগিতা", "Complain": "অভিযোগ করা", "Complete": "সম্পূর্ণ",
+        "Computer": "কম্পিউটার", "Condition": "অবস্থা", "Conquer": "জয় করা", "Consecutive": "টানা", "Consider": "বিবেচনা করা",
+        "Constitution": "সংবিধান", "Continuous": "নিরবচ্ছিন্ন", "Control": "নিয়ন্ত্রণ", "Convenient": "সুবিধাজনক", "Conversation": "কথোপকথন",
+        "Cool": "শান্ত", "Correct": "সঠিক", "Council": "পরিষদ", "Counsel": "পরামর্শ", "Country": "দেশ",
+        "Couple": "দম্পতি", "Courage": "সাহস", "Course": "কোর্স", "Courtesy": "ভদ্রতা", "Cousin": "ভাইবোন",
+        "Creature": "প্রাণী", "Criminal": "অপরাধী", "Crisis": "সংকট", "Criticize": "সমালোচনা করা", "Cruel": "নিষ্ঠুর",
+        "Culture": "সংস্কৃতি", "Curiosity": "কৌতূহল", "Curious": "কৌতূহলী", "Current": "বর্তমান", "Curtain": "পর্দা",
+        "Custom": "প্রথা", "Customer": "ক্রেতা", "Daily": "প্রতিদিন", "Danger": "বিপদ", "Daughter": "কন্যা",
+        "Deceive": "প্রতারণা করা", "Decide": "সিদ্ধান্ত নেওয়া", "Decision": "সিদ্ধান্ত", "Decorate": "সাজানো", "Deep": "গভীর",
+        "Delicious": "সুস্বাদু", "Describe": "বর্ণনা করা", "Description": "বর্ণনা", "Desert": "মরুভূমি", "Dessert": "মিষ্টি খাবার",
+        "Determine": "সংকল্প করা", "Develop": "উন্নতি করা", "Dictionary": "অভিধান", "Difference": "পার্থক্য", "Different": "আলাদা",
+        "Difficult": "কঠিন", "Dinner": "রাতের খাবার", "Direction": "দিক", "Disappear": "অদৃশ্য হওয়া", "Disappoint": "নিরাশ করা",
+        "Disastrous": "বিপর্যয়কর", "Discover": "আবিষ্কার করা", "Discuss": "আলোচনা করা", "Disease": "রোগ", "Distance": "দূরত্ব",
+        "Distinct": "স্বতন্ত্র", "Divide": "ভাগ করা", "Doctor": "ডাক্তার", "Dollar": "ডলার", "Doubt": "সন্দেহ",
+        "Dressed": "পোশাক পরিহিত", "During": "সময়ে", "Early": "ভোরবেলা", "Earn": "উপার্জন করা", "Earth": "পৃথিবী",
+        "Easily": "সহজে", "Economy": "অর্থনীতি", "Edge": "প্রান্ত", "Education": "শিক্ষা", "Effect": "প্রप्रभाव",
+        "Efficient": "দক্ষ", "Eight": "আট", "Either": "যেকোনো একটি", "Elegant": "মার্জিত", "Element": "উপাদান",
+        "Elephant": "হাতি", "Eligible": "যোগ্য", "Eliminate": "বর্জন করা", "Else": "অন্যথা", "Empty": "খালি",
+        "Encourage": "উৎসাহিত করা", "Energy": "শক্তি", "Engine": "ইঞ্জিন", "Enjoy": "উপভোগ করা", "Enough": "যথেষ্ট",
+        "Entrance": "প্রবেশপথ", "Environment": "পরিবেশ", "Equation": "সমীকরণ", "Equipped": " সজ্জিত", "Escape": "পালানো",
+        "Especially": "বিশেষ করে", "Essential": "অপরিহার্য", "Establish": "স্থাপন করা", "Estimate": "অনুমান করা", "Evening": "সন্ধ্যা",
+        "Event": "ঘটনা", "Every": "প্রত্যেক", "Everybody": "সবাই", "Evidence": "প্রমাণ", "Exactly": "ঠিকঠাক",
+        "Example": "উদাহরণ", "Excellent": "চমৎকার", "Except": "ব্যতীত", "Excited": "উত্তেজিত", "Exercise": "ব্যায়াম",
+        "Expect": "আশা করা", "Expensive": "দামি", "Experiment": "পরীক্ষা", "Explain": "ব্যাখ্যা করা", "Explanation": "ব্যাখ্যা",
+        "Explore": "অনুসন্ধান করা", "Express": "প্রকাশ করা", "Extreme": "চরম", "Factory": "কারখানা", "Failure": "ব্যর্থতা",
+        "Familiar": "পরিচিত", "Famous": "বিখ্যাত", "Farther": "আরও দূরে", "Fashion": "শৈলী", "Fast": "দ্রুত",
+        "Father": "বাবা", "Favorite": "প্রিয়", "Fear": "ভয়", "Feature": "বৈশিষ্ট্য", "February": "ফেব্রুয়ারি",
+        "Feeling": "অনুভূতি", "Field": "মাঠ", "Fierce": "ভয়ংকর", "Fifth": "পঞ্চম", "Fight": "যুদ্ধ",
+        "Final": "চূড়ান্ত", "Finally": "অবশেষে", "Financial": "আর্থিক", "Find": "খুঁজে পাওয়া", "Fine": "সুন্দর",
+        "Finger": "আঙুল", "Finish": "শেষ করা", "Fire": "আগুন", "First": "প্রথম", "Floor": "মেঝে",
+        "Flower": "ফুল", "Follow": "অনুসরণ করা", "Food": "খাবার", "Foolish": "বোকা", "Foot": "পা",
+        "Football": "ফুটবল", "Force": "বল প্রয়োগ", "Forest": "বন", "Forget": "ভুলে যাওয়া", "Forgive": "ক্ষমা করা",
+        "Formal": "আনুষ্ঠানিক", "Former": "প্রাক্তন", "Forward": "সামনের দিকে", "Foundation": "ভিত্তি", "Four": "চার",
+        "Fourth": "চতুর্থ", "Free": "মুক্ত", "Freedom": "স্বাধীনতা", "Freeze": "জমে যাওয়া", "Fresh": "তাজা",
+        "Friend": "বন্ধু", "Front": "সামনে", "Fruit": "ফল", "Full": "পূর্ণ", "Fun": "মজা",
+        "Funny": "হাস্যকর", "Furniture": "আসবাবপত্র", "Future": "ভবিষ্যৎ", "Game": "খেলা", "Garden": "বাগান",
+        "Gather": "জড়ো করা", "General": "সাধারণ", "Generation": "প্রজন্ম", "Gentle": "নম্র", "Gentleman": "ভদ্রলোক",
+        "Geography": "ভূগোল", "Giant": "দানব", "Gift": "উপহার", "Girl": "মেয়ে", "Give": "দেওয়া",
+        "Glad": "খুশি", "Glass": "কাঁচ", "Glorious": "গৌরবময়", "Gold": "সোনা", "Golden": "সোনালী",
+        "Good": "ভালো", "Goodbye": "বিদায়", "Government": "সরকার", "Graceful": "মার্জিত", "Grade": "শ্রেণী",
+        "Grammar": "ব্যাকরণ", "Grand": "মহৎ", "Grandfather": "দাদা/নানা", "Grandmother": "দাদি/নানি", "Grass": "ঘাস",
+        "Great": "বিরাট", "Green": "সবুজ", "Grey": "ধূসর", "Ground": "ভূমি", "Group": "দল",
+        "Grow": "জন্মানো", "Growth": "বৃদ্ধি", "Guard": "প্রহরী", "Guess": "অনুমান", "Guest": "অতিথি",
+        "Guide": "পথপ্রদর্শক", "Guilt": "দোষ", "Habit": "অভ্যাস", "Hair": "চুল", "Half": "অর্ধেক",
+        "Hammer": "হাতুড়ি", "Hand": "হাত", "Handle": "হাতল", "Handsome": "সুদর্শন", "Happen": "ঘটা",
+        "Happiness": "সুখ", "Happy": "খুশি", "Hard": "কঠিন", "Harvest": "ফসল কাটা", "Hat": "টুপি",
+        "Hate": "ঘৃণা করা", "Health": "স্বাস্থ্য", "Healthy": "স্বাস্থ্যকর", "Hear": "শোনা", "Heart": "হৃদয়",
+        "Heat": "তাপ", "Heaven": "স্বর্গ", "Heavy": "ভারী", "Height": "উচ্চতা", "Hello": "ওহে",
+        "Help": "সাহায্য", "Hero": "বীর", "Hidden": "লুকানো", "Hide": "লুকিয়ে রাখা", "High": "উচ্চ",
+        "Hill": "পাহাড়", "History": "ইতিহাস", "Hobby": "শখ", "Hold": "ধরা", "Holiday": "ছুটির দিন",
+        "Holy": "পবিত্র", "Home": "বাড়ি", "Honest": "সৎ", "Honor": "সম্মান", "Hope": "আশা",
+        "Horrible": "ভয়াবহ", "Horse": "ঘোড়া", "Hospital": "হাসপাতাল", "Host": "স্বাগতিক", "Hotel": "হোটেল",
+        "Hour": "ঘণ্টা", "House": "ঘর", "Human": "মানুষ", "Humor": "রসবোধ", "Hundred": "শত",
+        "Hungry": "ক্ষুধার্ত", "Hunt": "শিকার করা", "Hurry": "তাড়াহুড়ো", "Hurt": "আঘাত পাওয়া", "Husband": "স্বামী",
+        "Idea": "ধারণা", "Identify": "শনাক্ত করা", "Identity": "পরিচয়", "Idle": "অলস", "Imagine": "কল্পনা করা",
+        "Importance": "গুরুত্ব", "Important": "গুরুত্বপূর্ণ", "Impossible": "অসম্ভব", "Improve": "উন্নত করা", "Include": "অন্তর্ভুক্ত করা",
+        "Increase": "বৃদ্ধি", "Indeed": "প্রকৃতপক্ষে", "Independence": "স্বাধীনতা", "Individual": "ব্যক্তিগত", "Industry": "শিল্প",
+        "Influence": "প্রভাব", "Inform": "জানানো", "Information": "তথ্য", "Injury": "আঘাত", "Inner": "ভিতরের",
+        "Innocent": "নির্দোষ", "Inside": "ভিতরে", "Insist": "জিদ করা", "Inspect": "পরিদর্শন করা", "Instant": "তাত্ক্ষণিক",
+        "Instead": "পরিবর্তে", "Instrument": "যন্ত্রপাতি", "Insurance": "বীমা", "Intelligent": "বুদ্ধিমান", "Intend": "ইচ্ছা করা",
+        "Interest": "আগ্রহ", "International": "আন্তর্জাতিক", "Into": "ভিতরে", "Introduce": "পরিচয় করানো", "Invent": "উদ্ভাবন করা",
+        "Invitation": "নিমন্ত্রণ", "Invite": "আমন্ত্রণ জানানো", "Iron": "লোহা", "Island": "দ্বীপ", "Issue": "বিষয়",
+        "Item": "পদ", "Itself": "নিজেই", "January": "জানুয়ারি", "Jewel": "রত্ন", "Job": "কাজ",
+        "Join": "যোগদান", "Joint": "যৌথ", "Joke": "কৌতুক", "Journal": "সাময়িকী", "Journey": "ভ্রমণ",
+        "Joy": "আনন্দ", "Judge": "বিচারক", "Juice": "রস", "July": "জুলাই", "Jump": "লাফানো",
+        "Junior": "কনিষ্ঠ", "Just": "কেবল", "Justice": "বিচার", "Keep": "রাখা", "Key": "চাবি",
+        "Kick": "লাথি", "Kill": "মারা", "Kind": "দয়ালু", "King": "রাজা", "Kiss": "চুম্বন",
+        "Kitchen": "রান্নাঘর", "Knee": "হাঁটু", "Knife": "ছুরি", "Knock": "ধাক্কা দেওয়া", "Know": "জানা",
+        "Labor": "শ্রম", "Lack": "অভাব", "Lady": "ভদ্রমহিলা", "Lake": "হ্রদ", "Lamp": "বাতি",
+        "Land": "ভূমি", "Language": "ভাষা", "Large": "বিশাল", "Last": "শেষ", "Late": "দেরি",
+        "Laugh": "হাসি", "Law": "আইন", "Lawyer": "আইনজীবী", "Lead": "পরিচালনা করা", "Leader": "নেতা",
+        "Leaf": "পাতা", "Learn": "শেখা", "Least": "অন্তত", "Leather": "চামড়া", "Leave": "ত্যাগ করা",
+        "Lecture": "বক্তৃতা", "Left": "বাম", "Leg": "পা", "Legal": "আইনি", "Lemon": "লেবু",
+        "Length": "দৈর্ঘ্য", "Less": "কম", "Lesson": "পাঠ", "Letter": "চিঠি", "Level": "স্তর",
+        "Liberty": "স্বাধীনতা", "License": "লাইসেন্স", "Lie": "মিথ্যা", "Life": "জীবন", "Lift": "উত্তোলন",
+        "Light": "আলো", "Like": "পছন্দ করা", "Limit": "সীমা", "Line": "রেখা", "Lip": "ঠোঁট",
+        "Liquid": "তরল", "List": "তালিকা", "Listen": "শোনা", "Literature": "সাহিত্য", "Little": "ছোট",
+        "Live": "বাস করা", "Living": "জীবন্ত", "Load": "বোঝাই", "Local": "স্থানীয়", "Lock": "তালা",
+        "Log": "কাঠের গুঁড়ি", "Lonely": "একাকী", "Long": "লম্বা", "Look": "তাকানো", "Loose": "ঢিলেঢালা",
+        "Lose": "হারানো", "Loss": "ক্ষতি", "Lot": "অনেক", "Loud": "উচ্চস্বরে", "Love": "ভালোবাসা",
+        "Lovely": "সুন্দর", "Low": "নিচু", "Luck": "ভাগ্য", "Lucky": "ভাগ্যবান", "Lunch": "দুপুরের খাবার",
+        "Machine": "যন্ত্র", "Mad": "পাগল", "Magazine": "সাময়িকী", "Magic": "জাদু", "Mail": "ডাক",
+        "Main": "প্রধান", "Maintain": "বজায় রাখা", "Major": "বড়", "Make": "তৈরি করা", "Male": "পুরুষ",
+        "Man": "মানুষ", "Manage": "ব্যবস্থাপনা", "Manager": "ব্যবস্থাপক", "Manner": "কায়দা", "Many": "অনেক",
+        "Map": "মানচিত্র", "March": "মার্চ", "Mark": "চিহ্ন", "Market": "বাজার", "Marriage": "বিয়ে",
+        "Marry": "বিয়ে করা", "Mass": "গণ", "Master": "প্রভু", "Material": "উপাদান", "Matter": "বিষয়",
+        "Maximum": "সর্বোচ্চ", "May": "হতে পারে", "Maybe": "সম্ভবত", "Meal": "খাবার", "Mean": "অর্থ",
+        "Meaning": "মানে", "Measure": "পরিমাপ", "Meat": "মাংস", "Medicine": "ওষুধ", "Meet": "দেখা করা",
+        "Meeting": "সভা", "Member": "সদস্য", "Memory": "স্মৃতি", "Mention": "উল্লেখ করা", "Merchant": "বণিক",
+        "Message": "বার্তা", "Metal": "ধাতু", "Method": "পদ্ধতি", "Middle": "মাঝখানে", "Might": "হতে পারে",
+        "Mile": "মাইল", "Military": "সামরিক", "Milk": "দুধ", "Million": "দশ লক্ষ", "Mind": "মন",
+        "Mine": "আমার", "Mineral": "খনিজ", "Minimum": "সর্বনিম্ন", "Minister": "মন্ত্রী", "Minute": "মিনিট",
+        "Mirror": "আয়না", "Miss": "মিস করা", "Mistake": "ভুল", "Mix": "মিশ্রণ", "Model": "নমুনা",
+        "Modern": "আধুনিক", "Moment": "মুহূর্ত", "Monday": "সোমবার", "Money": "টাকা", "Month": "মাস",
+        "Mood": "মেজাজ", "Moon": "চাঁদ", "Moral": "নৈতিক", "Morning": "সকাল", "Most": "অধিকাংশ",
+        "Mother": "মা", "Motion": "গতি", "Mountain": "পাহাড়", "Mouth": "মুখ", "Move": "নড়া",
+        "Movement": "আন্দোলন", "Movie": "চলচ্চিত্র", "Mud": "কাদা", "Muscle": "পেশি", "Music": "গান",
+        "Must": "অবশ্যই", "Mystery": "রহস্য"
+    };
+
+    const bnW = ["অত্যধিক", "অধীন", "অন্বেষণ", "অহিনকুল", "আকণ্ঠ", "আশীর্বাদ", "ইদানীং", "উজ্জ্বল", "উচ্ছ্বাস", "ঊর্ধ্ব", "ক্ষুর", "গড্ডলিকা", "গীতাঞ্জলি", "গৃহিণী", "চাণক্য", "জ্যোৎস্না", "তিতিক্ষা", "দরিদ্রতা", "দৈন্য", "দূরবীক্ষণ", "ননদ", "নমস্কার", "পক্ক", "পিপীলিকা", "পৌরহিত্য", "বিমর্ষ", "বিভীষিকা",
+     "বুদ্ধিজীবী", "মুহূর্ত", "মুমূর্ষু", "মৌনতা", "শুশ্রূষা", "সান্ত্বনা", "সমীচীন", "সৌজন্য", "সাক্ষ্য", "স্থায়িত্ব", "হৃদয়", "ক্ষতবিক্ষত", "অকালকুষ্মাণ্ড", "অঙ্কন", "অর্ঘ্য", "অশরীরী", "আকাঙ্ক্ষা", "আত্মসাৎ", "আকস্মিক", "ব্যুৎপত্তি", "মনীষী", "সান্নিধ্য", "সত্ত্বে", "সঙ্কট", "অপাঙ্ক্তেয়", "তলোয়ার", "ঐক্যতান", "দুস্থ",
+     "নিষ্কর", "মনঃকষ্ট", "মনস্তাপ", "পুরস্কার", "পরিষ্কার", "আবিষ্কার", "অদ্যাপি", "অন্তঃসত্ত্বা", "শিরচ্ছেদ", "জাজ্বল্যমান", "অপরাহ্ণ", "পূর্বাহ্ণ", "সায়াহ্ণ", "মধ্যাহ্ণ", "অত্যধিক", "অধীন", "অন্বেষণ", "অহিনকুল", "আকণ্ঠ", "আশীর্বাদ", "ইদানীং", "উজ্জ্বল", "উচ্ছ্বাস", "ঊর্ধ্ব", "ক্ষুর", "গড্ডলিকা", "গীতাঞ্জলি", "গৃহিণী",
+     "চাণক্য", "জ্যোৎস্না", "তিতিক্ষা", "দরিদ্রতা", "দৈন্য", "দূরবীক্ষণ", "ননদ", "নমস্কার", "পক্ক", "পিপীলিকা", "পৌরহিত্য", "বিমর্ষ", "বিভীষিকা", "বুদ্ধিজীবী", "মুহূর্ত", "মুমূর্ষু", "মৌনতা", "শশ্রূষা", "সান্ত্বনা", "সমীচীন", "সৌজন্য", "সাক্ষ্য", "স্থায়িত্ব", "হৃদয়", "ক্ষতবিক্ষত", "অকালকুষ্মাণ্ড", "অঙ্কন", "অর্ঘ্য", "অশরীরী",
+     "আকাঙ্ক্ষা", "আত্মসাৎ", "আ আ", "আকস্মিক", "ব্যুৎপত্তি", "মনীষী", "শুশ্রূষা", "সান্নিধ্য", "সত্ত্বে", "সঙ্কট", "অপাঙ্ক্তেয়", "তলোয়ার", "ঐক্যতান", "দুস্থ", "নিষ্কর", "মনঃকষ্ট", "মনস্তাপ", "পুরস্কার", "পরিষ্কার", "আবিষ্কার", "অদ্যাপি", "উ উ", "অন্তঃসত্ত্বা", "শিরচ্ছেদ", "জাজ্বল্যমান", "অদ্যপি", "অপরাহ্ণ", "পূর্বাহ্ণ",
+      "সায়াহ্ণ", "মধ্যাহ্ণ","অদ্যাপি", "উপর্যুক্ত", "ইতোমধ্যে", "মুমূর্ষু", "শুশ্রূষা", "সান্ত্বনা", "অপরাহ্ণ", "শ্মশান", "ভবিষ্যৎ", "অহরাত্র", "অঞ্জলি", "ব্যাপ্ত", "শাশ্বত", "মরীচিকা", "পুরস্কার", "পিপীলিকা", "লঙ্ঘন", "বিদুষী", "গীতাঞ্জলি", "চাকরি", "তর্জনী", "দীনতা", "দুরবস্থা", "মনঃপূত", "উচ্ছ্বাস", "ঐক্য", "কষ্টি", "কৌতূহল",
+       "গৃহস্থালি", "উপযোগিতা", "শ্রদ্ধাঞ্জলি", "প্রতিযোগিতা", "সত্ত্ব", "লজ্জাকর", "মনোমালিন্য", "সদুপদেশ", "উৎকর্ষ", "আকণ্ঠ", "আষাঢ়", "ঈষৎ", "ঔপনিবেশিক", "ঋদ্ধ", "কৃচ্ছ্র", "ক্ষণস্থায়ী", "ক্ষুধা", "গড্ডলিকা", "ঘনিষ্ঠ", "চাতুর্য", "ছাত্রীনিবাস", "জগন্নাথ", "জ্যৈষ্ঠ", "তত্ত্বাবধান", "তিরস্কার", "ত্যাজ্য", "নমস্কার", "পক্ব",
+       "পরাস্ত", "পোস্ট", "প্রণয়ন", "বাণিজ্য", "বিভীষিকা", "বিস্বাদ", "বুদ্ধিজীবী", "ব্যাকরণ", "ভৌগোলিক", "মনীষী", "মুখস্থ", "মুহূর্ত", "মৈত্রী", "যক্ষ্মা", "লক্ষণ", "শরৎকাল", "সস্ত্রীক", "স্মৃতিস্তম্ভ", "স্বায়ত্তশাসন", "নিক্বণ", "নুপুর", "পঙ্ক্তি", "পঞ্জিকা", "পরিষ্কার", "পার্থক্য", "পুনঃপুন", "প্রজ্জ্বলিত", "প্রাতঃকাল", "প্রণিধান",
+        "বঙ্গবন্ধু", "বরখাস্ত", "ব্যথা", "ব্যক্তিগত", "ব্রাহ্মণ", "ভস্ম", "ভিখারি", "ভীষণ", "ভুবন", "মধুসূদন", "মরুদ্যান", "মস্তিষ্ক", "মহীয়সী", "মহামতি", "মাতৃষ্বসা", "মানিকগঞ্জ", "মূর্ত", "মৌন", "যদ্যপি", "রঞ্জিত", "রসায়ন", "রাজশাহী", "লক্ষ্মী", "লজ্জা", "শশার", "শারীরিক", "শীতল", "শুচিতা", "শৃঙ্খল", "শ্রেণি", "শ্রোতা",
+         "ষষ্ঠ", "সংবর্ধনা", "সংশ্লিষ্ট", "সাঁতার", "সাক্ষ্য", "সাদৃশ্য", "সারথি", "সায়াহ্ন", "সুধী", "সূর্য", "সৃষ্টি", "সৌজন্য", "স্তব্ধ", "স্ত্রীর", "স্থায়ী", "স্বচ্ছ", "স্বজন", "স্বয়ং", "স্বাক্ষর", "স্বার্থ", "হূদয়", "হৃৎপিণ্ড", "ক্ষণ", "ক্ষতি", "ক্ষয়", "ক্ষান্ত", "ক্ষিপ্র", "ক্ষুণ্ণ", "ক্ষেত্র", "ক্ষোভ", "ক্ষৌরী", "জ্ঞাত", "জ্যোতি", "জ্বর", "জ্বালা",
+          "ঝঞ্ঝা", "টিকা", "টিপ্পনী", "ঠাঁই", "ডাকাতি", "ঢেউ", "ততক্ষণাৎ", "ততধিক", "তপোবন", "তমসা", "তরু", "তস্কর", "তৈরি", "ত্বক", "দক্ষিণ", "দণ্ড", "দত্ত", "দরিদ্র", "দর্পণ", "দাঢ্য", "দিঘি", "দিগন্ত", "দীন", "দুর্গা", "দুর্দশা", "দুর্নীতি", "দুর্গ", "দৃশ্য", "দেবালয়", "দোষ", "দ্রুত", "দ্রষ্টব্য", "দ্বন্দ্ব", "দ্বীপ", "ধনী",
+          "ধর্ম", "ধরণ", "ধূমকেতু", "ধূলি", "ধৈর্য", "নক্ষত্র", "নখ", "নগর", "নদী", "নম্র", "নরক", "নবীন", "নাসিকা", "নিখুঁত", "নিথর", "নিন্দা", "নিপুণ", "নিমন্ত্রণ", "নিরপেক্ষ", "নিরস", "নিশ্চয়", "নিশ্বাস", "নীল", "নৃত্য", "নেতা", "নৈপুণ্য", "নৈশ", "পক্ষ", "পণ্ডিত", "পতাকা", "পত্তন", "পথ", "পদবি", "পদ্মা", "পদ্য",
+           "পবন", "পরম", "পরশ", "পরাহ্ণ", "পরিণাম", "পরিণত", "পরিণয়", "পরিবেশ", "পরিমাণ", "পল্লী", "পশু", "পাখি", "পাথর", "পাপ", "পারদর্শী", "পার্বত্য", "পালন", "পিঞ্জর", "পিতা", "পীত", "পীড়া", "পুণ্য", "পুতুল", "পুষ্প", "পূজা", "পূরণ", "পূর্ণ", "পূর্ব", "পৃথক", "পৃষ্ঠা", "পেট", "পোশাক", "পৌরসভা", "প্রকাশ",
+            "প্রজাপতি", "প্রথা", "প্রদীপ", "প্রদেশ", "প্রান্ত", "প্রার্থনা", "প্রিয়", "প্রীতি", "ফল", "ফাল্গুন", "ফিরিঙ্গি", "ফুটন্ত", "ফুল", "ফেনিল", "বংশ", "বক্তা", "বজ্র", "বড়", "বরণ", "বর্জ্য", "বর্ণনা", "বর্তমান", "বর্ষা", "বসন্ত", "বহ্নি", "বাঁচানো", "বাধা", "বানান", "বাণী", "বায়ু", "বার", "বারণ", "বালক", "বাল্মীকি", "বিখ্যাত",
+             "বিচার", "বিচিত্র", "বিচ্ছেদ", "বিজয়", "বিজ্ঞান", "বিজ্ঞপ্তি", "বিডম্বনা", "বিতর্ক", "বিদায়", "বিদেশ", "বিদ্যুৎ", "বিদ্যা", "বিনাশ", "বিন্দু", "বিপদ", "বিপরীত", "বিপ্লব", "বিফল", "বিবেক", "বিবেচনা", "বিবাহ", "বিবিধ", "বিরাম", "বিশাল", "বিশেষ", "বিশ্রাম", "বিশ্বাস", "বিষ", "বিষয়", "বিস্ময়", "বীর", "বৃক্ষ", "বৃত্ত",
+              "বৃষ্টি", "বৃহৎ", "বেগ", "বেণু", "বেতন", "বেশ", "বোধ", "ব্যঞ্জন", "ব্যস্ত", "ব্যায়াম", "ব্যর্থ", "ব্যয়", "ব্যবহার", "ব্যাধি", "ব্যুৎপত্তি", "ব্রহ্ম", "ভক্তি", "ভগবান", "ভয়", "ভরসা", "ভাই", "ভাগ", "ভাগ্য", "ভাজন", "ভাণ্ডার", "ভার", "ভারত", "ভাল", "ভাষা", "ভাস্কর", "ভিতর", "ভিন্ন", "ভীতি", "ভীষণ", "ভুল",
+              "ভূগোল", "ভূত", "ভূমি", "ভূষণ", "ভেষজ", "ভোগ", "ভোজন", "ভ্রমণ", "ভ্রান্তি", "মঙ্গল", "মজা", "মঞ্চ", "মঞ্জুরি", "মঠ", "মণ", "মণি", "মত", "মৎস্য", "মদ", "মধু", "মন", "মনসা", "মরণ", "মরু", "মর্যাদা", "মল", "মশা", "মসৃণ", "মহৎ", "মহত্ত্ব", "মহড়া", "মহল", "মহা", "মা", "মাংস", "মাঘ", "মাঠ",
+               "মাথা", "মান", "মানুষ", "মায়া", "মার", "মাস", "মিথ্যা", "মিনতি", "মিষ্টি", "মুক্তি", "মুখ", "মুদ্রা", "মুনি", "মুমূর্ষু", "মূল", "মূল্য", "মেষ", "মেহমান", "মৈত্র", "মোহ", "মৌল", "মৌমাছি", "যম", "যশ", "যষ্টি", "যাতনা", "যাত্রা", "যামিনী", "যুগ", "যুত", "যুদ্ধ", "যুবক", "যোগ", "যোগ্য", "যৌবন"];
+    const bnP = ["তিনি সস্ত্রীক ঢাকা থাকেন।", "বিদ্বানকে সকলে শ্রদ্ধা করে।", "অল্প বিদ্যা ভয়ংকরী।", "দরিদ্রতা অভিশাপ।", "চাঁদনী রাত অতি মনোরম।",
+        "অকারণে সময় নষ্ট করো না।", "বিপদে মোরে রক্ষা করো।", "সূর্য পূর্ব দিকে উদিত হয়।", "তৃণভোজী প্রাণীরা শান্ত হয়।", "মানুষ মরণশীল।",
+        "অদ্যপি সে কাজটি হয়নি।", "আকণ্ঠ ভোজন স্বাস্থ্যের ক্ষতি করে।", "গীতাঞ্জলি রবীন্দ্রনাথের কাব্য ", "দেশকে সেবা করা ভালো কাজ।",
+        "বাবা আমাকে উপদেশ দিলেন।", "গড্ডলিকা প্রবাহে গা ভাসিও না।", "বিমর্ষ বদনে বসে থেকো না।", "মুমূর্ষু রোগীর সেবা করো।",
+        "সত্য বলা কঠিন কিন্তু উচিত।", "শিক্ষা জাতির মেরুদণ্ড।", "গাছে কাঁঠাল গোঁফে তেল।", "সততাই সর্বোত্তম পন্থা।",
+        "নদীর পানি নির্মল ", "পরিষ্কার পরিচ্ছন্ন থাকো।", "আকাশে মেঘ জমেছে।", "ফুল ফুটেছে বাগানে।", "ছাত্ররা পড়াশোনা করছে।","সব পাখি উড়ে গেল।", "বিদ্বানকে সবাই শ্রদ্ধা করে।", "অশ্রুতে বুক ভেসে গেল।", "তাকে সপরিবার দাওয়াত দাও।", "দেশের দীনতা দূর করতে হবে।", "নিরপরাধ ব্যক্তিকে শাস্তি দিও না।",
+         "এক মাঘে শীত যায় না।", "বিদ্বান মূর্খ অপেক্ষা শ্রেষ্ঠতর।", "এই অফিস আজ বন্ধ।", "তিনি সস্ত্রীক ঢাকা থাকেন।", "অনাথা মেয়েটি বড় অসহায়।", "গোরু-ছাগলের পাল।", "সুজনরা আজ আসবে।", "দশে মিলে করি কাজ।", "মৈত্রী অটুট থাকুক।", "বিপদ এবং দুঃখ একসাথে আসে।", "সততাই সর্বোৎকৃষ্ট পন্থা।",
+          "তার সৌজন্যে আমি সুযোগটি পেয়েছি।", "ছেলেটি অত্যন্ত মেধাবী।", "সূর্য পূর্ব দিকে উদিত হয়।", "অহংকার পতনের মূল।", "পড়াশোনায় মন দাও।", "মিথ্যা বলা মহাপাপ।", "রহিম ও করিম দুই ভাই।", "সে আজ ঢাকা যাবে।", "মা শিশুকে চাঁদ দেখাচ্ছেন।", "গাছে গাছে ফুল ফুটেছে।", "নদীতে অনেক মাছ আছে ",
+          "গরিবের দুঃখ কেউ বোঝে না।", "মানুষ মরণশীল।", "সময় কারো জন্য অপেক্ষা করে না।", "স্বাস্থ্যই সকল সুখের মূল।", "বই পড়ার অভ্যাস গড়ুন।", "পরিশ্রম সৌভাগ্যের প্রসূতি।", "লোভে পাপ, পাপে মৃত্যু।", "একতাই বল।", "বিপদ কখনো একা আসে না।", "চকচক করলেই সোনা হয় না।", "ভাবিয়া করিও কাজ।",
+           "আয় বুঝে ব্যয় কর।", "সবার উপরে আল্লাহ সত্য।", "নিজের চরকায় তেল দাও।", "অতি লোভে তাঁতি নষ্ট।", "অল্প বিদ্যা ভয়ংকরী।", "ইচ্ছা থাকলে উপায় হয়।", "চোরে না শোনে ধর্মের কাহিনী।", "জোর যার মুল্লুক তার।", "ডুবন্ত মানুষ খড়কুটোও ধরে।", "তেল মাথায় তেল দেওয়া।", "নাই মামার চেয়ে কানা মামা ভালো।",
+            "পাস করলেই শিক্ষিত হওয়া যায় না।", "হয়তো সে আসবে।", "দয়া করে ভেতরে আসুন।", "আপনি কেমন আছেন?", "আমি আজ খুব খুশি।", "পাখিরা আকাশে ওড়ে।", "মাছ পানিতে বাস করে।", "পদ্মা একটি বড় নদী।", "রাজশাহী একটি প্রাচীন শহর।", "সে খুব ভালো গান গায়।", "সূর্য অস্ত যাচ্ছে ", "চাঁদ আলো দেয়।",
+             "ফুলটি খুব সুন্দর।", "সে প্রতিদিন স্কুলে যায়।", "বাবা বাজার থেকে ফিরলেন।", "আমি ভাত খাই।", "তুমি কি যাবে?", "সে পড়াশোনা করছে।", "আজ বৃষ্টি হতে পারে।", "গাছ আমাদের পরম বন্ধু।", "বাগানটি খুব বড়।", "সকালে হাওয়া শরীরের জন্য ভালো।", "বড়দের শ্রদ্ধা করা উচিত।", "বইটি খুব দামী।", "কলমটি টেবিলের উপরে আছে।",
+              "পুকুরে অনেক পানি।", "আকাশ নীল দেখাচ্ছে।", "সে দ্রুত দৌড়াতে পারে।", "টিভি দেখা কমিয়ে দাও।", "কম্পিউটার একটি আধুনিক যন্ত্র।", "ज्ञानই শক্তি।", "ক্ষমা মহত্ত্বের লক্ষণ।", "চরিত্র মানুষের অমূল্য সম্পদ।", "দেশকে ভালোবাসুন।", "শ্রমের মর্যাদা দিন।", "সময়ের সদ্ব্যবহার করুন।", "বিনয় মানুষকে বড় করে।", "ধৈর্য ধরুন।",
+               "সত্যের জয় অবশ্যম্ভাবী।", "পাপীকে নয় পাপকে ঘৃণা করুন।", "পরোপকার একটি মহৎ গুণ।", "অহিংসা ভালো কাজ।", "সাদা মনে কাদা নেই।", "আকাশে মেঘ জমেছে।", "বিকেলে আমরা ফুটবল খেলি।", "চাঁদনী রাত খুব মনোরম. ", "সবাইকে ধন্যবাদ।", "শুভ জন্মদিন।", "বিদায় বন্ধু।", "খোদা হাফেজ।", "অদ্যপি সে কাজটি করেনি।",
+               "মুমূর্ষু রোগীর সেবা করো।", "বিমর্ষ বদনে বসে থেকো না।", "গীতাঞ্জলি রবীন্দ্রনাথের কাব্য।", "সান্ত্বনা দেওয়া সহজ কাজ নয়।", "অকারণে সময় নষ্ট করো না।", "অধ্যয়নই ছাত্রদের তসম্প্রতি।", "পরিষ্কার পরিচ্ছন্নতা ঈমানের অঙ্গ।", "সৌজন্যবোধ একটি মহৎ গুণ।", "সত্য বলা কঠিন কিন্তু উচিত।",
+            "বিদ্বানকে সকলে শ্রদ্ধা করে।", "দারিদ্রতা অভিশাপ নয়।", "पृथ्वी সূর্যের চারদিকে ঘোরে।", "এক মাঘে শীত যায় না।", "সততাই সর্বোত্তম পন্থা।", "অধিক সন্ন্যাসীতে গাজন নষ্ট।", "মানুষ মরণশীল প্রাণী।", "বন্যেরা বনে সুন্দর।", "চোর পালালে বুদ্ধি বাড়ে।", "দেশের সেবা করা ভালো।",
+            "বিপদে মোরে রক্ষা করো আল্লাহ ", "গাছে কাঁঠাল গোঁফে তেল।", "সবুরে মেওয়া ফলে।", "দশের লাঠি একের বোঝা. ", "ভাবিয়া করিও কাজ।", "নিজের চরকায় তেল দাও।", "পরিশ্রম সৌভাগ্যের প্রসূতি।", "লোভে পাপ পাপে মৃত্যু।", "চকচক করলেই সোনা হয় না।", "অতি লোভে তাঁতি নষ্ট।",
+            "অল্প বিদ্যা ভয়ংকরী।", "ইচ্ছা থাকলে উপায় হয়।", "চোরে না শোনে ধর্মের কাহিনী।", "জোর যার মুল্লুক তার।", "ডুবন্ত মানুষ খড়কুটোও ধরে।", "তেলা মাথায় তেল দেওয়া।", "নাই মামার চেয়ে কানা মামা ভালো।", "পাস করলেই শিক্ষিত হওয়া যায় না।", "যেমন কর্ম তেমন ফল।", "আকাশ কুসুম চিন্তা করা।",
+            "মা শিশুকে চাঁদ দেখাচ্ছেন।", "গাছে গাছে ফুল ফুটেছে।", "নদীতে অনেক মাছ আছে।", "গরিবের দুঃখ কেউ বোঝে না।", "সময় কারো জন্য অপেক্ষা করে না।", "স্বাস্থ্যই সকল সুখের মূল।", "বই পড়ার অভ্যাস গড়ুন।", "একতাই বল।", "বিপদ কখনো একা আসে না।", "আয় বুঝে ব্যয় কর।",
+            "সবার উপরে আল্লাহ সত্য।", "কাঁচায় না নোয়ালে বাঁশ।", "মন্ত্রের সাধন কিংবা শরীর পতন।", "বৃক্ষ তোমার নাম কি ফলে পরিচয়।", "অতি ভক্তি চোরের লক্ষণ।", "যার কাজ তারে সাজে।", "কাজের সময় কাজী কাজ ফুরালে পাজী।", "কই মাছের প্রাণ অনেক শক্ত।", "আপন ভালো তো জগৎ ভালো।", "ঘুঘু দেখেছ ফাঁদ দেখনি।",
+            "উলুবনে মুক্তা ছড়ানো।", "তালপাতার সেপাই।", "ঘরের শত্রু বিভীষণ।", "মশা মারতে কামান দাগা।", "আঠারো মাসে বছর।", "অরণ্যে রোদন করা।", "হিতে বিপরীত হওয়া।", "ধর্মের কল বাতাসে নড়ে. ", "শঠে শাঠ্যং সমাচারেত।", "বিনা মেঘে বজ্রপাত।",
+            "বজ্র আঁটুনি ফস্কা গেরো।", "হাটে হাঁড়ি ভাঙা।", "বালির বাঁধ দিয়ে কি হবে।", "সাপের পাঁচ পা দেখা।", "ভিজে বিড়াল হয়ে থেকো না।", "রাঘব বোয়াল গ্রাস করে।", "শকুনের দোয়ায় গরু মরে না।", "নুন আনতে পান্তা ফুরায়।", "হাতটান স্বভাব ভালো নয়।", "ঘোড়া ডিঙিয়ে ঘাস খাওয়া।",
+            "অন্ধের যষ্টি হওয়া।", "একাই একশ হওয়া।", "চক্ষু দান করা।", "তাসের ঘর ভেঙে গেল।", "বর্ণচোরা আম চেনা কঠিন।", "বালু দিয়ে তেল বের করা।", "ভিটেয় ঘুঘু চরানো।", "রামনাম জপা।", "শাঁখের করাত দুই দিকে কাটে।", "হাড় হাভাতে লোক।",
+            "কুঁড়ে স্বভাবের মানুষ।", "কাষ্ঠ হাসি হাসা।", "কান পাতলা হওয়া।", "গোবর গণেশ হওয়া।", "জিলাপির প্যাঁচ থাকা।", "টাকার গরম দেখানো।", "ডুমুরের ফুল হওয়া।", "তিলকে তাল করা।", "দুমুখো সাপ। ", "পালের গোদা।",
+            "তথ্যপ্রযুক্তির দ্রুত বিকাশের ফলে বিশ্বজুড়ে অর্থনৈতিক কর্মকাণ্ডে নতুন দিগন্ত উন্মোচিত হয়েছে। ডিজিটাল অর্থনীতির যুগে তরুণ সমাজের ভূমিকা দিন দিন বৃদ্ধি পাচ্ছে।",
+  "জলবায়ু পরিবর্তনের চ্যালেঞ্জ মোকাবিলায় সবুজ শক্তি ব্যবহারের কোনো বিকল্প নেই। নবায়নযোগ্য শক্তির ব্যবহার ভবিষ্যতে কার্বন নিঃসরণ কমাতে মূল ভূমিকা রাখবে।",
+  "শিক্ষা ব্যবস্থায় ডিজিটালাইজেশন শিক্ষার্থীদের শেখার প্রক্রিয়াকে আরও সহজ ও আনন্দদায়ক করেছে। অনলাইন শিক্ষার মাধ্যমে দূরবর্তী অঞ্চলের শিক্ষার্থীরাও মানসম্মত শিক্ষা পাচ্ছে।",
+  "কৃষি খাতে আধুনিক প্রযুক্তির ব্যবহারে দেশে খাদ্য উৎপাদন উল্লেখযোগ্যভাবে বৃদ্ধি পেয়েছে। স্মার্ট কৃষির ছোঁয়া কৃষকদের ফলন ও আয় বাড়াতে সাহায্য করছে।",
+  "স্বাস্থ্যসেবায় আর্টিফিশিয়াল ইন্টেলিজেন্স বা কৃত্রিম বুদ্ধিমত্তার ব্যবহার জটিল রোগ নির্ণয়কে আরও দ্রুত ও নির্ভুল করে তুলছে।",
+  "বিশ্বজুড়ে টেকসই উন্নয়নের লক্ষ্যে প্লাস্টিকের ব্যবহার কমানোর ওপর জোর দেওয়া হচ্ছে। পরিবেশবান্ধব পণ্যের ব্যবহার বাড়াতে সামাজিক সচেতনতা জরুরি।",
+  "খেলাধুলা তরুণদের শারীরিক ও মানসিক বিকাশে অপরিসীম ভূমিকা পালন করে। সঠিক প্রশিক্ষণ ও সুযোগ পেলে আন্তর্জাতিক অঙ্গনে দেশের মুখ উজ্জ্বল করা সম্ভব।",
+  "পর্যটন শিল্পের বিকাশ একটি দেশের অর্থনৈতিক ভিত্তি মজবুত করতে সাহায্য করে। ঐতিহাসিক ও প্রাকৃতিক স্থানগুলোর সঠিক পরিচর্যা পর্যটকদের আকর্ষণ করে।",
+  "বই পড়ার অভ্যাস মানুষের চিন্তাভাবনা ও জ্ঞানের পরিধি প্রসারিত করে। ডিজিটাল যুগের ব্যস্ততার মাঝেও সাহিত্য চর্চা মানুষকে মানসিক প্রশান্তি দেয়।",
+  "আন্তর্জাতিক বাজারে তৈরি পোশাক শিল্পের চাহিদা ধরে রাখতে পণ্যের গুণগত মান বজায় রাখা অত্যন্ত জরুরি। নতুন প্রযুক্তি ব্যবহারে উৎপাদনশীলতা বাড়ানো প্রয়োজন।",
+  "মহাকাশ গবেষণায় নতুন নতুন আবিস্কার মানবজাতির ভবিষ্যতের জন্য নতুন সম্ভাবনার পথ খুলে দিচ্ছে। স্যাটেলাইট প্রযুক্তির উন্নতির ফলে যোগাযোগ ব্যবস্থা সহজ হয়েছে।",
+  "শহরাঞ্চলের যানবাহন নিয়ন্ত্রণ ও ট্রাফিক সমস্যা নিরসনে পরিকল্পিত পরিবহন ব্যবস্থা গড়ে তোলা প্রয়োজন। গণপরিবহনের মান বাড়ালে যানজট অনেকটাই কমে আসবে।",
+  "সামাজিক যোগাযোগ মাধ্যম বর্তমান সময়ে তথ্যের আদান-প্রদানে গুরুত্বপূর্ণ ভূমিকা রাখছে। তবে ভুয়া খবর ছড়িয়ে পড়া রোধে সচেতনতা প্রয়োজন।",
+  "নদীমাতৃক এই দেশে নদীদূষণ রোধ করা পরিবেশ রক্ষার অন্যতম প্রধান দায়িত্ব। শিল্পবর্জ্য নদীতে ফেলা বন্ধ করতে কঠোর পদক্ষেপ গ্রহণ করতে হবে।",
+  "ব্যাংকিং খাতে ডিজিটাল সেবার প্রসারের ফলে মানুষ এখন ঘরে বসেই অর্থনৈতিক লেনদেন সম্পন্ন করতে পারছে। এতে মানুষের সময় ও শ্রম উভয়ই বাঁচছে।",
+  "ক্ষুদ্র ও মাঝারি শিল্প দেশের সার্বিক অর্থনীতিকে সচল রাখতে চালিকাশক্তি হিসেবে কাজ করে। নতুন উদ্যোক্তাদের উৎসাহিত করতে সহজ ঋণের ব্যবস্থা করা দরকার।",
+  "স্মার্ট সিটি নির্মাণে ডিজিটাল অবকাঠামো এবং প্রযুক্তিনির্ভর নাগরিক সেবা নিশ্চিত করা জরুরি। এতে শহরের মানুষের জীবনযাত্রার মান বহুগুণ বেড়ে যায়।",
+  "সৌরবিদ্যুৎ ও বায়ুবিদ্যুতের মতো প্রাকৃতিক শক্তির ব্যবহার পরিবেশের ভারসাম্য বজায় রাখতে সাহায্য করে। গ্রিন এনার্জির প্রসার ভবিষ্যৎ প্রজন্মের জন্য নিরাপদ।",
+  "গবেষণা ও উদ্ভাবন একটি জাতির অগ্রগতির অন্যতম সূচক। বিজ্ঞান ও প্রযুক্তি গবেষণায় বাজেট বৃদ্ধি করলে নতুন নতুন আবিষ্কার সম্ভব।",
+  "বনায়ন কর্মসূচির মাধ্যমে বনাঞ্চল বৃদ্ধি করা জলবায়ু পরিবর্তনের প্রভাব কমাতে দারুণ কার্যকরী। গাছ লাগানো ও বন রক্ষায় সবার এগিয়ে আসা উচিত।",
+  "সাইবার নিরাপত্তা বজায় রাখা বর্তমান ডিজিটাল বিশ্বের জন্য সবচেয়ে বড় চ্যালেঞ্জ। ব্যক্তি ও প্রতিষ্ঠানের সংবেদনশীল তথ্য সুরক্ষায় সতর্ক থাকা প্রয়োজন।",
+  "সাংস্কৃতিক চর্চা ঐতিহ্যকে বাঁচিয়ে রাখতে সহায়তা করে। নিজস্ব সংস্কৃতি ও শিল্পকলাকে বিশ্বদরবারে তুলে ধরার জন্য তরুণ প্রজন্মকে এগিয়ে আসতে হবে।",
+  "মেডিকেল বিজ্ঞানের গবেষণায় অসংক্রামক রোগ প্রতিরোধে নতুন ওষুধ ও চিকিৎসা পদ্ধতি উদ্ভাবন হচ্ছে, যা মানুষের গড় আয়ু বৃদ্ধিতে অবদান রাখছে।",
+  "শ্রমিকদের নিরাপত্তা ও কর্মপরিবেশ উন্নত করা টেকসই শিল্প উন্নয়নের অন্যতম পূর্বশর্ত। নিরাপদ কর্মক্ষেত্র কাজের গতি ও মান বাড়িয়ে দেয়।",
+  "খাদ্য নিরাপত্তার পাশাপাশি পুষ্টিকর খাবার সরবরাহ নিশ্চিত করা অত্যন্ত প্রয়োজন। ভেজালমুক্ত খাদ্য উৎপাদন জনস্বাস্থ্যের জন্য অপরিহার্য।",
+  "মহাকাশে কৃত্রিম উপগ্রহ পাঠাল নতুন উচ্চতায় পৌঁছে দিচ্ছে যোগাযোগ প্রযুক্তিকে। এর ফলে ইন্টারনেট সেবা এবং আবহাওয়া পূর্বাভাস পাওয়া সহজ হচ্ছে।",
+  "তরুণদের দক্ষতা বৃদ্ধিতে কারিগরি শিক্ষার প্রসার অত্যন্ত দরকারি। আধুনিক বিশ্বের চাহিদানুযায়ী কারিগরি জ্ঞান অর্জন করলে কর্মসংস্থান নিশ্চিত হবে।",
+  "সমুদ্র সম্পদ বা ব্লু ইকোনমির সঠিক ব্যবহার দেশের অর্থনীতিতে বিরাট পরিবর্তন আনতে পারে। সামুদ্রিক সম্পদের সঠিক ব্যবস্থাপনা জরুরি।",
+  "আবহাওয়ার চরম পরিবর্তন ও অকাল বন্যা কৃষকদের ফসলের ব্যাপক ক্ষতি করছে। সহনশীল জাতের ফসল উদ্ভাবন করে কৃষকদের সহায়তা করা প্রয়োজন।",
+  "উদ্যোক্তা সংস্কৃতির বিকাশ স্বাবলম্বী হওয়ার সুযোগ তৈরি করে। তরুণদের নতুন ব্যবসার ধারণা নিয়ে কাজ করতে উৎসাহিত করা অর্থনৈতিক প্রবৃদ্ধির মূল চাবিকাঠি।",
+  "নবায়নযোগ্য জ্বালানি ব্যবহারে পৃথিবীর কাঙ্ক্ষিত লক্ষ্য অর্জনে বৈশ্বিক সহযোগিতা প্রয়োজন। কার্বন নির্গমন হ্রাস করা এখন সময়ের দাবি।",
+  "বিজ্ঞান মেলা ও প্রযুক্তিনির্ভর প্রদর্শনী শিক্ষার্থীদের মধ্যে উদ্ভাবনী চিন্তা ও কৌতূহল তৈরি করে। স্কুল পর্যায় থেকেই বিজ্ঞানের চর্চা বাড়ানো দরকার।",
+  "বর্জ্য ব্যবস্থাপনা শহরের পরিবেশ পরিচ্ছন্ন রাখার জন্য অত্যন্ত গুরুত্বপূর্ণ। বর্জ্য পুনঃব্যবহার বা রিসাইক্লিং পদ্ধতির মাধ্যমে বর্জ্যকে সম্পদে রূপান্তর করা সম্ভব।",
+  "আন্তর্জাতিক বাণিজ্যে নিজেদের অবস্থান সুসংহত করতে নতুন নতুন বাজার তৈরি করা প্রয়োজন। মানসম্মত পণ্য ও প্রতিযোগিতামূলক দাম নিশ্চিত করা জরুরি।",
+  "মানসিক স্বাস্থ্য রক্ষা করা শারীরিক স্বাস্থ্যের মতোই সমান গুরুত্বপূর্ণ। কাজের চাপ ও দৈনন্দিন জীবনের নানা জটিলতার মাঝে মানসিক প্রশান্তি প্রয়োজন।",
+  "ই-কমার্স বা অনলাইন কেনাকাটার প্রসারে ব্যবসায় নতুন মাত্রা যোগ হয়েছে। বিশ্বস্ততা ও সঠিক সেবা বজায় রাখলে এই খাতের সম্ভাবনা অপার।",
+  "অনলাইন এডুকেশন প্ল্যাটফর্মগুলোর মাধ্যমে যে কেউ যেকোনো স্থান থেকে নতুন নতুন দক্ষতা অর্জন করতে পারছে। শেখার সীমানা এখন বিশ্বব্যাপী বিস্তৃত।",
+  "ঐতিহাসিক প্রত্নতাত্ত্বিক নিদর্শনগুলো রক্ষা করা আমাদের জাতীয় দায়িত্ব। প্রাচীন ইতিহাস ও ঐতিহ্য ধরে রাখলে ভবিষ্যৎ প্রজন্ম অনেক কিছু শিখতে পারবে।",
+  "বইমেলা ও সাংস্কৃতিক উৎসবগুলো পাঠক ও লেখকদের মধ্যে আত্মিক বন্ধন তৈরি করে। বই পড়ার সংস্কৃতি টিকিয়ে রাখা সমাজের প্রগতির জন্য আবশ্যক।",
+  "স্বচ্ছতা ও জবাবদিহিতা নিশ্চিত করার মাধ্যমে যেকোনো প্রতিষ্ঠানের কাজের মান বহুগুণ বাড়িয়ে তোলা সম্ভব। প্রশাসনিক কাজে প্রযুক্তি ব্যবহারের অবদান অনেক।",
+  "রোবোটিক্স প্রযুক্তির অগ্রগতির কারণে শিল্প কারখানায় ঝুঁকিপূর্ণ কাজগুলো এখন খুব সহজেই করা যাচ্ছে। এতে কাজের উৎপাদনশীলতা বহুগুণ বৃদ্ধি পায়।",
+  "বিকল্প শক্তির উৎস হিসেবে হাইড্রোজেন ফুয়েল এবং ইলেকট্রিক গাড়ির ব্যবহার জনপ্রিয় হচ্ছে। পরিবেশবান্ধব যান চলাচল শহরের বায়ুদূষণ দূর করতে সহায়ক।",
+  "সঠিক খাদ্যাভ্যাস ও নিয়মিত ব্যায়াম মানুষকে বিভিন্ন রোগ থেকে মুক্ত রাখে। সুস্বাস্থ্যের জন্য প্রতিদিনের দিনলিপিতে সচেতন থাকা জরুরি।",
+  "দক্ষ মানবসম্পদ তৈরি করতে শিক্ষার মানোন্নয়নের পাশাপাশি ব্যবহারিক অভিজ্ঞতার গুরুত্ব দেওয়া প্রয়োজন। উচ্চশিক্ষা হতে হবে গবেষণানির্ভর।",
+  "মহাকাশ বিজ্ঞানে নারীদের অংশগ্রহণ দিন দিন বৃদ্ধি পাচ্ছে। বিভিন্ন বৈজ্ঞানিক গবেষণায় তাঁদের অবদান বিশ্বজুড়ে প্রশংসিত হচ্ছে।",
+  "বিশ্ব স্বাস্থ্য সংস্থার তথ্য অনুযায়ী নিয়মিত পরিষ্কার-পরিচ্ছন্নতা বজায় রাখলে অনেক সাধারণ সংক্রামক ব্যাধি থেকে দূরে থাকা সম্ভব।",
+  "ড্রোন প্রযুক্তির সাহায্যে কৃষিজমি পর্যবেক্ষণ থেকে শুরু করে জরুরি ত্রাণ সামগ্রী পৌঁছানো পর্যন্ত নানা কঠিন কাজ দ্রুত ও দক্ষতার সঙ্গে করা যাচ্ছে।",
+  "সংবাদমাধ্যমের বস্তুনিষ্ঠতা বজায় রাখা একটি সুস্থ সমাজের জন্য অত্যন্ত জরুরি। নিরপেক্ষ সংবাদ মানুষকে সত্য ও সঠিক সিদ্ধান্ত নিতে সাহায্য করে।",
+  "ভার্চুয়াল রিয়ালিটি ও অগমেন্টেড রিয়ালিটি শিক্ষা ও বিনোদন জগতে এক অভূতপূর্ব পরিবর্তন এনেছে। এর ব্যবহারে বাস্তব অভিজ্ঞতা পাওয়া সম্ভব হচ্ছে।",
+  "বিশ্বশান্তি ও স্থিতিশীলতা বজায় রাখতে আন্তর্জাতিক সহযোগিতা অত্যন্ত প্রয়োজন। সংকটময় মুহূর্তে পারস্পরিক ঐক্য মানবজাতির কল্যাণের পথ দেখায়।"
+            ];
+    const enP = ["He is an L.L.B.", "Iron is a useful metal.", "The rich are not always happy.", "He is a university student.",
+    "I saw a one-eyed man.", "English is the language of the English.", "The more you read, the more you learn.",
+    "Honesty is the best policy.", "He is an heir to the property.", "Wait for an hour.", "He is a European.",
+    "Copper is a useful metal.", "The Padma is a big river.", "He is the best boy in the class.", "He is an honest man.",
+    "Gold is a precious metal.", "The Sun rises in the East.", "He is a unique person.", "What a pity!",
+    "I read the Ittefaq daily.", "He is blind of one eye.", "He is blind to his son's faults.", "The man died of cholera.",
+    "The man died from overeating.", "The man died by poison.", "He died for his country.", "Absorb in thought.",
+    "He is senior to me.", "Abstain from smoking.", "He is devoid of common sense.", "I prefer tea to coffee.",
+    "Believe in honesty.", "He is angry with me.", "He is angry at my behavior.", "Beware of pickpockets.",
+    "He is confident of success.", "Divide the mango between the two boys.", "Divide the mango among the three boys.",
+    "The cat is fond of milk.", "He excels in English.", "I am indebted to him.", "He is ignorant of the fact.",
+    "Look at the blackboard.", "Look for the lost pen.", "Look into the matter.", "Look after your parents.",
+    "He is jealous of my fame.", "Success depends on hard work.", "Kindness is a virtue.", "He lives on rice.",
+    "The scissors are blunt.", "He and I are present.", "Each of the boys has a pen.",
+    "Neither of the two brothers was present.", "Bread and butter is my favorite breakfast.",
+    "One should do one's duty.", "He is as tall as I.", "Whom do you want?", "He gave me some advice.",
+    "Ten miles is a long distance.", "The news is shocking.", "He has no appetite for food.",
+    "Politics is a complex game.", "He was hanged for murder.",
+    "The climate of Cox’s Bazar is better than that of Dhaka.", "I saw him going.", "Let you and me go.",
+    "He is better than I.", "You, he and I are present.", "The cattle are grazing in the field.",
+    "None but Allah can help us.", "There is no mother but loves her child.", "No other boy is as good as he.",
+    "A lion is not stronger than he.", "No sooner had the thief seen the police than he ran away.",
+    "I cannot but do it.", "He is so weak that he cannot walk.", "How intelligent the boy is!", "If I were a king!",
+    "It is health which is wealth.", "Man is not immortal.", "He is not only honest but also industrious.",
+    "What a beautiful flower the rose is!", "It is knowledge that is power.", "There is nothing but has an end.",
+    "A drowning man catches at a straw.", "All that glitters is not gold.", "Barking dogs seldom bite.",
+    "Better late than never.", "Example is better than precept.", "Failure is the pillar of success.",
+    "Ill got, ill spent.", "It takes two to make a quarrel.", "Look before you leap.",
+    "Necessity is the mother of invention.", "Practice makes a man perfect.", "Strike the iron while it is hot.",
+    "The more, the merrier.", "Where there is a will, there is a way.", "Waste not, want not.",
+    "He has been ill since Friday last.", "It has been raining for two hours.",
+    "The patient had died before the doctor came.", "I shall have finished the work by then.",
+    "If it rains, I shall not go out.", "I wish I were a bird.", "I came home after the rain had stopped.",
+    "He speaks as if he were mad.", "It is high time we changed our habits.",
+    "The teacher said that the earth moves round the sun.", "He is addicted to gambling.",
+    "He is accustomed to hard work.", "He is afraid of snakes.", "He is capable of doing it.",
+    "He is guilty of murder.", "He is tired of hard work.", "He is worthy of praise.", "I have no money in hand.",
+    "I am proud of my country.", "I am sure of success.", "Listen to what I say.", "He was absent from the meeting.",
+    "He was annoyed with me.", "He was astonished at my conduct.", "He was based on truth.",
+    "He was born of poor parents.", "He was busy with his work.", "He was careful about his health.",
+    "He was content with his lot.", "He was faithful to his master.", "He was fit for the job.",
+    "He was full of joy.", "He was good at English.", "He was interested in music.", "He was kind to the poor.",
+    "He was loyal to his king.", "He was popular with his students.", "He was quick at figures.",
+    "He was satisfied with the result.", "He was short of money.", "He was superior to me.",
+    "He was true to his word.", "He was useful to us.", "He was vain of his wealth.", "He was weak in mathematics.",
+    "He was wise in his own conceit.", "Prevention is better than cure.", "Unity is strength.",
+    "A stitch in time saves nine.", "A friend in need is a friend indeed.", "Health is the root of all happiness.",
+    "Time and tide wait for none.", "Birds of a feather flock together.", "Empty vessels sound much.",
+    "Grasp all, lose all.", "Honesty is the best policy.", "Many a little makes a mickle.",
+    "Out of sight, out of mind.", "To err is human.", "Truth triumphs in the end.", "A burnt child dreads the fire.",
+    "A little learning is a dangerous thing.", "Black will take no other hue.", "Diamonds cut diamonds.",
+    "Every dog has his day.", "Morning shows the day.", "Tit for tat.", "Too many cooks spoil the broth.",
+    "He belongs to a noble family.", "He died from an accident.", "He is junior to me by two years.",
+    "He is known to me.", "He is limited to certain rules.", "He is married to my sister.",
+    "He is partial to his friends.", "He is polite in his behavior.", "He is prepared for the worst.",
+    "He is related to me.", "He is relevant to the point.", "He is satisfied with what he has.",
+    "He is thankful to you for your help.", "He is vexed with me.", "I am ashamed of my conduct.",
+    "I am blessed with good health.", "I am confident of success.", "I am hopeful of success.",
+    "I am ignorant of the matter.", "I am mindful of my duty.", "I am sensible of your kindness.",
+    "I am sorry for my mistake.", "I am tired of this life.", "I am used to such things.", "The train is on time.",
+    "The man is in danger.", "The boy is under age.", "The house is on fire.", "The matter is under consideration.",
+    "The price of rice is on the rise.", "The ship is at sea.", "The work is in progress.",
+    "He is out of danger.", "He is up to the mark.", "He is an honest man.", "The news is true.", "Neither he nor his brothers are present.", "One should do one's duty.",
+        "The boy was accused of theft.", "He has no taste for music.", "We must abide by the law.", "It is a long way to go.",
+        "She is senior to me.", "The patient died before the doctor came.", "Birds of a feather flock together.",
+        "Look before you leap.", "Time and tide wait for none.", "A friend in need is a friend indeed.",
+        "Unity is strength.", "Health is wealth.", "Early to bed and early to rise.", "Honesty is the best policy.",
+        "Barking dogs seldom bite.", "Example is better than precept.", "Grasp all, lose all.", "Every dog has his day.", "He is taller than I.", "You, he and I are present.", "Discuss the matter.", "He died of cancer.", "The scenery of Cox's Bazar is fine.", "I prefer tea to coffee.", "He called me a liar.", "She is my older sister.", "The sun rises in the east.", "He reached home.", "Tell me where you live.", "I look forward to hearing from you.", "Ten miles is a long distance.", "Each of the boys has a pen.", "Neither of the two roads leads to market.", "He is an honest man.", "The man was hanged for murder.", "He is weak in math.", "Birds fly in the sky.", "Fortune favors the brave.", "Honesty is the best policy.", "I will see you tomorrow.", "She sings very sweetly.", "Wait for me.", "It has been raining since morning.", "We should love our country.", "Do not tell a lie.", "Health is wealth.", "Time and tide wait for none.", "Practice makes a man perfect.", "United we stand, divided we fall.", "All that glitters is not gold.", "Look before you leap.", "Cut your coat according to your cloth.", "Where there is a will, there is a way.", "Better late than never.", "A friend in need is a friend indeed.", "Strike the iron while it is hot.", "Knowledge is power.", "Every mother loves her child.", "He goes to school every day.", "They are playing football.", "The earth is round.", "Water has no color of its own.", "Trees are our best friends.", "I am proud of you.", "Keep your promise.", "Listen to your teacher.", "May you be happy.", "Good morning to you.", "How are you?", "What is your name?", "I live in Bangladesh.", "English is an international language.", "The cow is a useful animal.", "Rice is our main food.", "Dhaka is a big city.", "The Padma is a large river.", "He works very hard.", "She is a beautiful girl.", "The sky is blue.", "My father is a teacher.", "I love my mother.", "Read the book carefully.", "Please sit down.", "Can you help me?", "It is time to go.", "I am feeling better today.", "Speak the truth.", "Take care of your health.", "God is good.", "Respect your elders.", "Industry is the key to success.", "Man is mortal.", "Don't waste your time.", "Be kind to the poor.", "The rose is a lovely flower.", "Milk is a balanced food.", "Education is the backbone of a nation.", "A little learning is a dangerous thing.", "Actions speak louder than words.", "Might is right.", "No pains, no gains.", "Grasp all, lose all.", "Failure is the pillar of success.", "Empty vessels sound much.", "Necessity is the mother of invention.", "Unity is strength.", "A barking dog seldom bites.", "Slow and steady wins the race.", "Prevention is better than cure.", "Knowledge is the light of mind.", "Charity begins at home.", "Morning shows the day.", "Life is not a bed of roses.", "To err is human.", "Out of sight, out of mind.", "Rome was not built in a day.", "Where there is smoke, there is fire.", "A stitch in time saves nine.", "He is an M.A. in English.", "Iron is a useful metal.", "The more you read the more you learn.", "Honesty is the best policy.", "He is an heir to the throne.", "Wait for an hour please.", "Copper is a useful metal.", "The Padma is a big river.", "He is the best boy in the class.", "He is an honest man.",
+            "Gold is a precious metal.", "The sun rises in the east.", "He is a unique person.", "What a beautiful bird it is!", "I read the Daily Ittefaq.", "He is blind of one eye.", "He is blind to his son's faults.", "The man died of cholera.", "The man died from overeating.", "He died for his country.",
+            "Absorb in thought.", "He is senior to me by two years.", "Abstain from smoking.", "He is devoid of common sense.", "I prefer tea to coffee.", "Believe in honesty.", "He is angry with me.", "He is angry at my behavior.", "Beware of pickpockets.", "He is confident of success.",
+            "Divide the mango between the two boys.", "Divide the mango among the three boys.", "The cat is fond of milk.", "He excels in English.", "I am indebted to him.", "He is ignorant of the fact.", "Look at the blackboard.", "Look for the lost pen.", "Look into the matter.", "Look after your parents.",
+            "He is jealous of my fame.", "Success depends on hard work.", "Kindness is a virtue.", "He lives on rice.", "The scissors are blunt.", "He and I are present.", "Each of the boys has a pen.", "Neither of the two brothers was present.", "Bread and butter is my favorite breakfast.", "One should do one's duty.",
+            "He is as tall as I.", "Whom do you want?", "He gave me some advice.", "Ten miles is a long distance.", "The news is shocking.", "He has no appetite for food.", "Politics is a complex game.", "He was hanged for murder.", "The climate of Rajshahi is better than Dhaka.", "I saw him going.",
+            "Let you and me go.", "He is better than I.", "You he and I are present.", "The cattle are grazing in the field.", "None but Allah can help us.", "There is no mother but loves her child.", "No other boy is as good as he.", "A lion is not stronger than he.", "I cannot but do it.", "He is so weak that he cannot walk.",
+            "How intelligent the boy is!", "If I were a king!", "It is health which is wealth.", "Man is not immortal.", "He is not only honest but also industrious.", "It is knowledge that is power.", "A drowning man catches at a straw.", "All that glitters is not gold.", "Barking dogs seldom bite.", "Better late than never.",
+            "Example is better than precept.", "Failure is the pillar of success.", "Ill got ill spent.", "It takes two to make a quarrel.", "Look before you leap.", "Necessity is the mother of invention.", "Practice makes a man perfect.", "Strike the iron while it is hot.", "Where there is a will there is a way.", "Waste not want not.",
+            "He has been ill since Friday last.", "It has been raining for two hours.", "The patient had died before the doctor came.", "I shall have finished the work by then.", "If it rains I shall not go out.", "I wish I were a bird.", "He speaks as if he were mad.", "It is high time we changed our habits.", "Prevention is better than cure.", "Unity is strength.",
+            "The rapid advancement of digital technology is fundamentally transforming global economies and creating new opportunities for youth.",
+  "Transitioning to renewable energy sources is essential to combating climate change and reducing carbon emissions worldwide.",
+  "Educational institutions are adopting digital learning tools to make education more accessible and engaging for students everywhere.",
+  "Modern agricultural techniques are significantly boosting crop yields and ensuring food security across developing regions.",
+  "Artificial intelligence in healthcare is enabling faster diagnostic processes and improving overall patient outcomes.",
+  "Reducing single-use plastics is crucial for protecting marine life and preserving natural ecosystems for future generations.",
+  "Sports and physical activities play a vital role in developing discipline, teamwork, and leadership skills among young people.",
+  "A thriving tourism industry can stimulate economic growth and promote cultural exchange between different nations.",
+  "Reading books regularly enhances critical thinking skills and broadens one's understanding of diverse perspectives.",
+  "Maintaining high quality standards in manufacturing is key to sustaining competitive advantages in global trade markets.",
+  "Space exploration continues to reveal new discoveries that expand human knowledge about the universe and satellite communications.",
+  "Implementing smart traffic management systems can relieve congestion and improve urban mobility in growing cities.",
+  "Social media platforms have revolutionized communication, though users must remain vigilant against spreading misinformation.",
+  "Protecting natural water bodies from industrial pollution is critical for safeguarding biodiversity and public health.",
+  "Digital banking and mobile financial services have greatly simplified everyday transactions for millions of users worldwide.",
+  "Small and medium enterprises serve as the backbone of national economies, fostering innovation and creating employment opportunities.",
+  "Building smart cities requires robust digital infrastructure and sustainable public services tailored to modern urban life.",
+  "Harnessing solar and wind power helps maintain environmental balance while reducing dependence on fossil fuels.",
+  "Continuous research and development are essential indicators of a nation's technological progress and economic strength.",
+  "Afforestation programs contribute significantly to absorbing carbon dioxide and mitigating the adverse effects of climate change.",
+  "Cybersecurity has become a top priority for protecting sensitive personal and organizational data in an interconnected world.",
+  "Preserving cultural heritage fosters social unity and connects future generations to their historical roots.",
+  "Medical breakthroughs in non-communicable disease prevention are extending human life expectancy and boosting life quality.",
+  "Improving workplace safety conditions is fundamental for achieving long-term industrial productivity and worker well-being.",
+  "Ensuring access to clean water and nutritious food is essential for sustaining healthy communities globally.",
+  "Satellite technology has enhanced global weather forecasting capabilities and disaster response management systems.",
+  "Vocational education programs equip individuals with practical skills necessary for securing employment in modern industries.",
+  "Sustainable utilization of ocean resources, known as the blue economy, holds vast potential for coastal nations.",
+  "Extreme weather patterns caused by global warming continue to pose severe challenges to traditional farming communities.",
+  "Encouraging entrepreneurship provides young professionals with the freedom to innovate and drive economic development.",
+  "Global collaboration is essential to achieving ambitious targets for reducing global greenhouse gas emissions.",
+  "Science fairs inspire curiosity and problem-solving skills among students, laying the foundation for future innovations.",
+  "Efficient waste management systems, including recycling initiatives, are vital for maintaining clean and healthy cities.",
+  "Expanding trade relationships allows countries to diversify their export markets and enhance economic stability.",
+  "Prioritizing mental health awareness is just as important as maintaining physical well-being in today's fast-paced world.",
+  "E-commerce continues to reshape retail industries by offering convenience and a broader range of products to consumers.",
+  "Online learning platforms democratize skill development by making quality courses accessible to anyone with an internet connection.",
+  "Protecting archaeological sites ensures that future generations can learn from historical artifacts and architectural achievements.",
+  "Cultural festivals and book fairs strengthen community bonds and promote lifelong engagement with literature.",
+  "Transparency and accountability in governance foster trust and enhance the efficiency of public administration.",
+  "Robotics and automation are streamlining dangerous tasks in manufacturing, leading to higher safety and productivity.",
+  "Electric vehicles and clean hydrogen fuels are paving the way toward zero-emission transportation systems in urban areas.",
+  "A balanced diet combined with regular exercise significantly reduces the risk of chronic health conditions.",
+  "Upgrading educational curricula to focus on practical skills prepares students for the evolving demands of the job market.",
+  "Women's growing participation in scientific fields is driving innovative research and breaking traditional gender barriers.",
+  "Proper hygiene practices recommended by health organizations help prevent the spread of infectious diseases worldwide.",
+  "Drone technology is increasingly utilized for precision agriculture, mapping, and rapid delivery of medical supplies.",
+  "Objective journalism plays a vital role in democratic societies by informing citizens with accurate and unbiased facts.",
+  "Virtual reality technologies offer immersive learning environments, transforming educational and professional training models.",
+  "International cooperation and diplomatic dialogue are crucial for preserving global peace and addressing shared challenges."
+            ];
+
+    let customs = JSON.parse(localStorage.getItem('rah_v11_cust')) || [];
+    
+    
+    let chars = [], timer = null, time = 0, active = false, done = false;
+    const segmenter = new Intl.Segmenter('bn', { granularity: 'grapheme' });
+
+    const bijoyMap = {
+        'q': 'ঙ', 'w': 'য', 'e': 'ড', 'r': 'প', 't': 'ট', 'y': 'চ', 'u': 'জ', 'i': 'হ', 'o': 'গ', 'p': 'ড়', '\\': 'ৎ',
+        'a': 'ৃ', 's': 'ু', 'd': 'ি', 'f': 'া', 'g': '্', 'h': 'ব', 'j': 'ক', 'k': 'ত', 'l': 'দ',
+        'z': '্র', 'x': 'ও', 'c': 'ে', 'v': 'র', 'b': 'ন', 'n': 'স', 'm': 'ম',
+        'Q': 'ং', 'W': 'য়', 'E': 'ঢ', 'R': 'ফ', 'T': 'ঠ', 'Y': 'ছ', 'U': 'ঝ', 'I': 'ঞ', 'O': 'ঘ', 'P': 'ঢ়','|': 'ঃ',
+        'A': 'র্', 'S': 'ূ', 'D': 'ী', 'F': 'অ', 'G': '।', 'H': 'ভ', 'J': 'খ', 'K': 'থ', 'L': 'ধ',
+        'Z': '্য', 'X': 'ৗ', 'C': 'ৈ', 'V': 'ল', 'B': 'ণ', 'N': 'ষ', 'M': 'শ',
+        '1': '১', '2': '২', '3': '৩', '4': '৪', '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯', '0': '০', '&': 'ঁ'
+    };
+
+    // ১. প্রথমে initApp ফাংশনটি এভাবে আপডেট করুন
+function initApp() {
+    const lang = document.getElementById('lang').value;
+    const mode = document.getElementById('mode').value;
+    const sel = document.getElementById('lesson-sel');
+    let pool = [];
+    const englishWords = Object.keys(meanings);
+
+    if (mode === 'words') {
+        const src = (lang === 'bn' ? bnW : englishWords);
+        pool = src.map((w, i) => {
+            let text = lang === 'en' ? (w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() + (" " + w.toLowerCase()).repeat(4)) : Array(5).fill(w).join(' ');
+            return { n: `W-${i+1}: ${w}`, t: text, m: lang === 'en' ? meanings[w] : "" };
+        });
+    } else if (mode === 'para') {
+        const src = (lang === 'bn' ? bnP : enP);
+        for (let i = 0; i < src.length; i += 10) {
+            pool.push({ n: `Set: ${Math.floor(i/10) + 1}`, t: src.slice(i, i + 10).join(' '), m: "" });
+        }
+    } else if (mode === 'custom') {
+        pool = customs.map((c, i) => ({ n: `Saved-${i+1}`, t: c, m: "" }));
+    }
+    
+    window.activePool = pool;
+    sel.innerHTML = pool.map((d, i) => `<option value="${i}">${d.n}</option>`).join('');
+
+    // এখানে হিস্টোরি লোড হচ্ছে
+    const storageKey = `rah_last_idx_${lang}_${mode}`;
+    const savedIdx = localStorage.getItem(storageKey);
+    if (savedIdx !== null && sel.options[savedIdx]) {
+        sel.value = savedIdx;
+    } else {
+        sel.value = 0;
+    }
+    
+    loadLesson();
+}
+
+// ২. এরপর এই loadLesson ফাংশনটি রাখুন
+function loadLesson() {
+    const lang = document.getElementById('lang').value;
+    const mode = document.getElementById('mode').value;
+    const idx = document.getElementById('lesson-sel').value;
+    
+    // বর্তমান ইনডেক্স সেভ করে রাখা
+    localStorage.setItem(`rah_last_idx_${lang}_${mode}`, idx);
+
+    if(window.activePool && window.activePool[idx]) {
+        const data = window.activePool[idx];
+        document.getElementById('meaning-display').innerText = data.m ? `অর্থ: ${data.m}` : "";
+        chars = Array.from(segmenter.segment(data.t)).map(s => s.segment);
+        document.getElementById('display-text').innerHTML = chars.map((c, i) => `<span id="s-${i}" class="char">${c}</span>`).join('');
+        resetApp();
+    }
+}
+
+
+    const input = document.getElementById('input-area');
+
+    let state = {
+        pendingKar: "",
+        gPressed: false
+        
+    };
+let testMode = false;
+let wrongCount = 0;
+    
+    input.addEventListener('keydown', function(e) {
+        const currentLang = document.getElementById('lang').value;
+        if (currentLang === 'en') return;
+
+        if (currentLang === 'bn') {
+            if (e.ctrlKey || e.altKey || e.metaKey || e.key.length > 1) return;
+
+            if (e.key === 'Backspace') {
+                state.pendingKar = "";
+                state.gPressed = false;
+                return;
+            }
+
+            if (bijoyMap.hasOwnProperty(e.key)) {
+                e.preventDefault();
+                let char = bijoyMap[e.key];
+                let start = this.selectionStart;
+                let end = this.selectionEnd;
+                let val = this.value;
+
+                if (e.key === ' ') {
+                    state.pendingKar = "";
+                    state.gPressed = false;
+                    this.value = val.substring(0, start) + ' ' + val.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 1;
+                    this.dispatchEvent(new Event('input'));
+                    return;
+                }
+
+                if (e.key === 'g') {
+                    state.gPressed = true;
+                    return;
+                }
+
+                if (state.gPressed) {
+                    let sworoborno = "";
+                    if (e.key === 'd') sworoborno = 'ই';
+                    else if (e.key === 'D') sworoborno = 'ঈ';
+                    else if (e.key === 's') sworoborno = 'উ';
+                    else if (e.key === 'S') sworoborno = 'ঊ';
+                    else if (e.key === 'a') sworoborno = 'ঋ';
+                    else if (e.key === 'c') sworoborno = 'এ';
+                    else if (e.key === 'C') sworoborno = 'ঐ';
+                    else if (e.key === 'x') sworoborno = 'ও';
+                    else if (e.key === 'X') sworoborno = 'ঔ';
+                    else if (e.key === 'f') sworoborno = 'আ';
+
+                    if (sworoborno !== "") {
+                        state.pendingKar = "";
+                        state.gPressed = false;
+                        this.value = val.substring(0, start) + sworoborno + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + sworoborno.length;
+                        this.dispatchEvent(new Event('input'));
+                        return;
+                    } else {
+                        char = '্' + char;
+                        state.gPressed = false;
+                    }
+                }
+
+                if (['ে', 'ি', 'ৈ', ].includes(char) && state.pendingKar === "") {
+                    state.pendingKar = char;
+                    return;
+                }
+
+                if (e.key === 'A') {
+                    if (start > 0) {
+                        let textBefore = val.substring(0, start);
+                        let lastChar = textBefore.slice(-1);
+                        let restText = textBefore.slice(0, -1);
+                        let finalBefore = "";
+
+                        if (['ে', 'ি', 'ৈ', 'ৗ', 'ো', 'ৌ', 'া', 'ী', 'ূ', 'ু', 'ৃ'].includes(lastChar)) {
+                            let targetChar = restText.slice(-1);
+                            finalBefore = restText.slice(0, -1) + "র্" + targetChar + lastChar;
+                        } else {
+                            finalBefore = restText + "র্" + lastChar;
+                        }
+
+                        this.value = finalBefore + val.substring(end);
+                        this.selectionStart = this.selectionEnd = finalBefore.length;
+                    }
+                }
+                else if (state.pendingKar !== "") {
+                    let combined = char + state.pendingKar;
+                    this.value = val.substring(0, start) + combined + val.substring(end);
+                    this.selectionStart = this.selectionEnd = start + combined.length;
+                    state.pendingKar = "";
+                }
+                else if (char.startsWith('্')) {
+                    let textBefore = val.substring(0, start);
+                    let lastChar = textBefore.slice(-1);
+
+                    if (['ে', 'ি', 'ৈ', 'ৗ', 'ো', 'ৌ'].includes(lastChar)) {
+                        let newBefore = textBefore.slice(0, -1) + char + lastChar;
+                        this.value = newBefore + val.substring(end);
+                        this.selectionStart = this.selectionEnd = newBefore.length;
+                    } else {
+                        this.value = val.substring(0, start) + char + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + char.length;
+                    }
+                }
+                else {
+                    let textBefore = val.substring(0, start);
+                    let lastChar = textBefore.slice(-1);
+
+                    if (lastChar === 'ে' && char === 'া') {
+                        this.value = textBefore.slice(0, -1) + 'ো' + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start;
+                    }
+                    else if (lastChar === 'ে' && char === 'ৗ') {
+                        this.value = textBefore.slice(0, -1) + 'ৌ' + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start;
+                    }
+                    else {
+                        this.value = val.substring(0, start) + char + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + char.length;
+                    }
+                }
+
+                this.dispatchEvent(new Event('input'));
+            }
+        }
+    });
+
+    input.addEventListener('input', function() {
+        if (!active && input.value.length > 0 && !done) {
+            active = true;
+            timer = setInterval(() => {
+                time++;
+                document.getElementById('st-time').innerText = time;
+                calculateWPM();
+            }, 1000);
+        }
+        updateTyping();
+    });
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (done) nextL();
+            else if (input.value.length >= chars.length) finish();
+        }
+    });
+
+            function updateTyping() {
+        const typedRaw = input.value.normalize('NFC');
+        const typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
+        let correct = 0;
+        wrongCount = 0;
+
+        const maxLen = Math.max(typed.length + 2, chars.length);
+        const displayDiv = document.getElementById('display-text');
+
+        for(let i = 0; i < maxLen; i++) {
+            const el = document.getElementById(`s-${i}`);
+            if(!el) continue;
+
+            const targetChar = chars[i] ? chars[i].normalize('NFC') : null;
+
+            if(i < typed.length) {
+                if(typed[i] === targetChar){
+
+    correct++;
+
+    if(testMode){
+
+        el.className="char";
+
+    }else{
+
+        el.className="char correct";
+
+    }
+
+
+}else{
+
+wrongCount++;
+    if(testMode){
+
+        el.className="char";
+
+    }else{
+
+        el.className="char wrong";
+
+    }
+
+}
+            } else {
+                if (i === typed.length) {
+                    if(el.className !== "char current") el.className = "char current";
+                } else {
+                    if(el.className !== "char") el.className = "char";
+                }
+            }
+        }
+
+        // এক্সট্রা টাইপিং এবং সাধারণ টাইপিং উভয়ের জন্যই নিখুঁত স্ক্রোল ট্র্যাকিং
+        if (done || typed.length >= chars.length) {
+            // প্যারাগ্রাফ শেষ বা এক্সট্রা টাইপ করার সময় সবসময় স্ক্রোল একদম নিচে লক থাকবে
+            displayDiv.scrollTop = displayDiv.scrollHeight;
+        } else {
+            // স্বাভাবিক টাইপিংয়ের সময় কারেন্ট এলিমেন্ট ট্র্যাক করবে
+            const currentEl = document.getElementById(`s-${typed.length}`);
+            if (currentEl) {
+                const containerHeight = displayDiv.clientHeight;
+                const elemTop = currentEl.offsetTop;
+                const elemHeight = currentEl.offsetHeight;
+
+                // কারেন্ট ক্যারেক্টারটি যদি স্ক্রিনের বাইরে চলে যেতে নেয়, তখনই স্ক্রোল পজিশন আপডেট হবে
+                if ((elemTop + elemHeight) > (displayDiv.scrollTop + containerHeight) || elemTop < displayDiv.scrollTop) {
+                    displayDiv.scrollTop = elemTop - (containerHeight / 2) + (elemHeight / 2);
+                }
+            }
+        }
+
+        if(typed.length > 0) {
+            document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
+        }
+
+        if(typed.length >= chars.length && !done && chars.length > 0) {
+            setTimeout(finish, 100);
+        }
+    }
 
 
 
-<div class="stat-box">
+    function finish() {
 
-WPM
+    done = true;
+    active = false;
+    clearInterval(timer);
 
-<span id="st-wpm">
-0
-</span>
+    const wpm = document.getElementById('st-wpm').innerText;
+    const acc = document.getElementById('st-acc').innerText;
 
-</div>
+    let wrongPercent = 0;
+
+    if(chars.length > 0){
+        wrongPercent = Math.round((wrongCount / chars.length) * 100);
+    }
+
+    document.getElementById('res-data').innerHTML =
+    `
+    গতি: <b>${wpm} WPM</b><br>
+    নির্ভুলতা: <b>${acc}</b><br>
+    সময়: <b>${time} সেকেন্ড</b><br>
+    ভুল: <b>${wrongCount}</b> টি<br>
+    Wrong: <b>${wrongPercent}%</b>
+    `;
+
+    document.getElementById('modal').style.display = "flex";
+}
+
+    function nextL() {
+        document.getElementById('modal').style.display = "none";
+        const sel = document.getElementById('lesson-sel');
+        sel.selectedIndex = (sel.selectedIndex + 1) % sel.options.length;
+        loadLesson();
+        input.focus();
+    }
+
+    function resetApp() { clearInterval(timer); time = 0; active = false; done = false;
+    wrongCount = 0;
+    input.value = ""; state.pendingKar = ""; state.gPressed = false; document.getElementById('st-time').innerText = "0"; document.getElementById('st-wpm').innerText = "0"; document.getElementById('st-acc').innerText = "100%"; document.getElementById('display-text').scrollTop = 0; input.focus(); }
+    function saveC() { const v = document.getElementById('c-in').value.trim(); if(v) { customs.push(v); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); document.getElementById('c-in').value=""; renderC(); initApp(); } }
+    function renderC() { document.getElementById('c-list').innerHTML = customs.map((x,i)=>`<div style="font-size:11px; background:rgba(0,0,0,0.05); padding:6px; margin-top:5px; border-radius:4px; display:flex; justify-content:space-between;"><span>${x.slice(0,20)}...</span><b style="color:red; cursor:pointer;" onclick="delC(${i})">মুছুন</b></div>`).join(''); }
+    function delC(i) { customs.splice(i,1); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); renderC(); initApp(); }
+    function updateFSize(v) { document.getElementById('display-text').style.fontSize = v + "px"; }
+    function updateFStyle(v) { document.getElementById('display-text').style.fontFamily = v + ", sans-serif"; document.getElementById('input-area').style.fontFamily = v + ", sans-serif"; }
+    function updateTheme(v) { document.documentElement.setAttribute('data-theme', v); }
+
+    function calculateWPM() {
+        if (time <= 0) return;
+        const typedRaw = input.value.normalize('NFC');
+        const typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
+        const wpm = Math.round((typed.length / 5) / (time / 60));
+        document.getElementById('st-wpm').innerText = wpm >= 0 ? wpm : 0;
+    }
+
+    window.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('modal');
+        if (done && modal.style.display === "flex") {
+            if (e.key === 'Enter') { e.preventDefault(); nextL(); }
+            else if (e.key === 'Escape') { e.preventDefault(); modal.style.display = "none"; fullResetCurrent(); }
+            else { modal.style.display = "none"; input.focus(); }
+        } else if (e.key === 'Escape') {
+            fullResetCurrent();
+        }
+    });
+
+    function fullResetCurrent() {
+        input.value = ""; done = false; active = false; clearInterval(timer); time = 0; state.gPressed = false; state.pendingKar = "";
+        document.getElementById('st-time').innerText = "0"; document.getElementById('st-wpm').innerText = "0"; document.getElementById('st-acc').innerText = "100%";
+        document.getElementById('display-text').scrollTop = 0;
+        chars.forEach((c, i) => {
+            const el = document.getElementById(`s-${i}`);
+            if (el) el.className = (i === 0) ? "char current" : "char";
+        });
+        input.focus();
+    }
+
+    window.addEventListener('load', () => { renderC(); initApp(); });
+
+   function toggleTestMode(){
+
+    testMode = !testMode;
+
+    const btn = document.getElementById("testBtn");
+
+    if(testMode){
+
+        btn.innerText="Test ON";
+        btn.style.background="#c62828";
+
+    }else{
+
+        btn.innerText="Test OFF";
+        btn.style.background="#00897b";
+
+    }
+
+} 
+    </script>
 
 
-
-
-
-<div class="stat-box">
-
-Accuracy
-
-<span id="st-acc">
-100%
-</span>
-
-</div>
-
-
-
-
-
-<div class="stat-box">
-
-Wrong
-
-<span id="st-wrong">
-0
-</span>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-<!-- CONTAINER END -->
-
-
-
-
-
-
-
-<!-- JAVASCRIPT ONLY ONCE -->
-
-
-<script src="app.js" defer></script>
-
-
-
+<script src="./app.js" defer></script>
 </body>
-
 </html>

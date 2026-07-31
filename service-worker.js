@@ -1,16 +1,18 @@
-const CACHE_NAME = 'type-rahmot-v4'; // ভার্সন নাম পরিবর্তন করা হয়েছে
+const CACHE_NAME = 'type-rahmot-v5';
 
 // যেসব ফাইল ক্যাশ করা আবশ্যক
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './app.js'
+  './app.js',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
-// ১. ইনস্টলেশন এবং ইন্সট্যান্ট অ্যাক্টিভেশন
+// ১. ইনস্টলেশন এবং ক্যাশিং
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // পুরানো সার্ভিস ওয়ার্কারকে সাথে সাথে বাইপাস করবে
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return Promise.allSettled(
@@ -22,7 +24,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// ২. পুরানো ক্যাশ ক্লিনআপ এবং তাৎক্ষণিক কন্ট্রোল
+// ২. পুরানো ক্যাশ মুছে ফেলা
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -33,11 +35,11 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => self.clients.claim()) // নতুন সার্ভিস ওয়ার্কার সাথে সাথে পেজের কন্ট্রোল নেবে
+    }).then(() => self.clients.claim())
   );
 });
 
-// ৩. অফলাইন ফেচ লজিক (গিটহাব পেজেস ফ্রেন্ডলি)
+// ৩. অফলাইন ফেচ হ্যান্ডলিং
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -49,8 +51,19 @@ self.addEventListener('fetch', (event) => {
       }
 
       // ক্যাশে না থাকলে নেটওয়ার্ক থেকে আনবে
-      return fetch(event.request).catch(() => {
-        // পুরোপুরি অফলাইনে থাকলে এবং পেজ নেভিগেট করলে index.html পেজ আউটপুট দেবে
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return response;
+      }).catch(() => {
+        // পুরোপুরি অফলাইনে থাকলে মূল index.html লোড করবে
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html') || caches.match('./');
         }

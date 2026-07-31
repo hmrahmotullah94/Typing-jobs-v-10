@@ -1805,6 +1805,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     if (pwaBar) pwaBar.hidden = true;
 }
 
+    // সার্ভিস ওয়ার্কার রেজিস্টার করা (অফলাইন সাপোর্টের জন্য)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker Registered successfully!'))
+            .catch(err => console.log('Service Worker Registration Failed:', err));
+    });
+}
+
     </script>
 
 

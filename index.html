@@ -924,6 +924,11 @@ textarea#input-area{
 
 <div class="sidebar" id="side">
     <h3 style="text-align: center;">সেটিংস</h3>
+    <!-- বিজয় / নরমাল টাইপিং টগল বাটন -->
+    <label>টাইপিং মোড:</label>
+    <button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px; cursor:pointer;">
+        বিজয় টাইপিং: ON
+    </button>
     <label>ফন্ট স্টাইল:</label>
     <select id="f-style" onchange="updateFStyle(this.value)" style="width:100%; margin-bottom:15px;">
         <option value="'Nikosh'">Nikosh (Standard)</option>
@@ -1423,6 +1428,8 @@ function loadLesson() {
         gPressed: false
         
     };
+    let isBijoyActive = true; // বাই ডিফল্ট বিজয় অন থাকবে
+
 let testMode = false;
 let wrongCount = 0;
     
@@ -1430,8 +1437,10 @@ let wrongCount = 0;
         const currentLang = document.getElementById('lang').value;
         if (currentLang === 'en') return;
 
-        if (currentLang === 'bn') {
-            if (e.ctrlKey || e.altKey || e.metaKey || e.key.length > 1) return;
+        if (currentLang === 'bn' && isBijoyActive) {
+    if (e.ctrlKey || e.altKey || e.metaKey || e.key.length > 1) return;
+    // ... বিজয়ের বাকি লজিক
+
 
             if (e.key === 'Backspace') {
                 state.pendingKar = "";
@@ -1754,6 +1763,20 @@ wrongCount++;
     }
 
 } 
+
+    function toggleBijoyMode() {
+    isBijoyActive = !isBijoyActive;
+    const btn = document.getElementById("bijoyBtn");
+    
+    if (isBijoyActive) {
+        btn.innerText = "বিজয় ON";
+        btn.style.background = "#2e7d32"; // সবুজ রঙ
+    } else {
+        btn.innerText = "বিজয় OFF (ইউনিকোড/অভ্র)";
+        btn.style.background = "#c62828"; // লাল রঙ
+    }
+}
+
     let deferredPrompt;
 const pwaBar = document.getElementById('pwaBar');
 const installButton = document.getElementById('installButton');

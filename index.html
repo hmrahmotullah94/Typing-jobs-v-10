@@ -923,12 +923,13 @@ textarea#input-area{
 <button class="toggle-btn" type="button" aria-label="সেটিংস খুলুন বা বন্ধ করুন" aria-controls="side" onclick="document.getElementById('side').classList.toggle('active')">⚙</button>
 
 <div class="sidebar" id="side">
+    <label>বিজয় কিবোর্ড মোড:</label>
+<button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px;">
+    বিজয় ON
+</button>
+
     <h3 style="text-align: center;">সেটিংস</h3>
-    <!-- বিজয় / নরমাল টাইপিং টগল বাটন -->
-    <label>টাইপিং মোড:</label>
-    <button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px; cursor:pointer;">
-        বিজয় টাইপিং: ON
-    </button>
+    
     <label>ফন্ট স্টাইল:</label>
     <select id="f-style" onchange="updateFStyle(this.value)" style="width:100%; margin-bottom:15px;">
         <option value="'Nikosh'">Nikosh (Standard)</option>

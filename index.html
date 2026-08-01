@@ -923,12 +923,13 @@ textarea#input-area{
 <button class="toggle-btn" type="button" aria-label="সেটিংস খুলুন বা বন্ধ করুন" aria-controls="side" onclick="document.getElementById('side').classList.toggle('active')">⚙</button>
 
 <div class="sidebar" id="side">
-    <label>বিজয় কিবোর্ড মোড:</label>
-<button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px;">
-    বিজয় ON
-</button>
-
     <h3 style="text-align: center;">সেটিংস</h3>
+    
+    <!-- বিজয় / নরমাল টাইপিং টগল বাটন -->
+    <label>টাইপিং মোড:</label>
+    <button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px; cursor:pointer;">
+        বিজয় টাইপিং: ON
+    </button>
     
     <label>ফন্ট স্টাইল:</label>
     <select id="f-style" onchange="updateFStyle(this.value)" style="width:100%; margin-bottom:15px;">
@@ -1429,8 +1430,10 @@ function loadLesson() {
         gPressed: false
         
     };
+    
     let isBijoyActive = true; // বাই ডিফল্ট বিজয় অন থাকবে
 
+    
 let testMode = false;
 let wrongCount = 0;
     
@@ -1658,7 +1661,7 @@ wrongCount++;
             document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
             // 👇 লাইভ ভুল % দেখানোর লাইন
     document.getElementById('st-wrong').innerText = Math.round((wrongCount/typed.length)*100) + "%";
-        
+
         }
 
         if(typed.length >= chars.length && !done && chars.length > 0) {
@@ -1762,10 +1765,11 @@ wrongCount++;
         btn.style.background="#00897b";
 
     }
+    
+    
 
 } 
-
-    function toggleBijoyMode() {
+function toggleBijoyMode() {
     isBijoyActive = !isBijoyActive;
     const btn = document.getElementById("bijoyBtn");
     
@@ -1777,8 +1781,10 @@ wrongCount++;
         btn.style.background = "#c62828"; // লাল রঙ
     }
 }
+ 
 
-    let deferredPrompt;
+
+let deferredPrompt;
 const pwaBar = document.getElementById('pwaBar');
 const installButton = document.getElementById('installButton');
 
@@ -1827,15 +1833,6 @@ window.addEventListener('appinstalled', () => {
 // ৪. অ্যাপটি যদি ইতিমধ্যে ইনস্টলড থাকে এবং অ্যাপ হিসেবে ওপেন করা হয়
 if (window.matchMedia('(display-mode: standalone)').matches) {
     if (pwaBar) pwaBar.hidden = true;
-}
-
-    // সার্ভিস ওয়ার্কার রেজিস্টার করা (অফলাইন সাপোর্টের জন্য)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('Service Worker Registered successfully!'))
-            .catch(err => console.log('Service Worker Registration Failed:', err));
-    });
 }
 
     </script>

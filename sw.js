@@ -1,4 +1,4 @@
-const CACHE_NAME = 'type-rahmot-v9';
+const CACHE_NAME = 'type-rahmot-v10';
 
 // যেসব ফাইল ক্যাশ করা আবশ্যক
 const ASSETS_TO_CACHE = [

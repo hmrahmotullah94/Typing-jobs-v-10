@@ -1,6 +1,6 @@
-const CACHE_NAME = 'type-rahmot-v10.2';
 
-// যেসব ফাইল ক্যাশ করা আবশ্যক
+const CACHE_NAME = 'type-rahmot-v10.3';
+
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -10,64 +10,104 @@ const ASSETS_TO_CACHE = [
   './icon-512.png'
 ];
 
-// ১. ইনস্টলেশন এবং ক্যাশিং
+// 1. Install and cache essential files
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return Promise.allSettled(
-        ASSETS_TO_CACHE.map((url) => 
-          cache.add(url).catch(err => console.warn('Cache error for:', url))
-        )
-      );
-    })
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      // Required files must be cached successfully.
+      await cache.addAll(ASSETS_TO_CACHE);
+
+      await self.skipWaiting();
+    })()
   );
 });
 
-// ২. পুরানো ক্যাশ মুছে ফেলা
+// 2. Activate and remove only old app caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
+    (async () => {
+      const keys = await caches.keys();
+
+      await Promise.all(
+        keys
+          .filter(
+            (key) =>
+              key.startsWith('type-rahmot-') &&
+              key !== CACHE_NAME
+          )
+          .map((key) => caches.delete(key))
       );
-    }).then(() => self.clients.claim())
+
+      await self.clients.claim();
+    })()
   );
 });
 
-// ৩. অফলাইন ফেচ হ্যান্ডলিং
+// 3. Offline request handling
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const request = event.request;
+
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+
+  // Handle only requests from this website.
+  if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
-      // ক্যাশে ফাইল থাকলে সেখান থেকে লোড হবে
-      if (cachedResponse) {
-        return cachedResponse;
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      // Navigation: network first, then cached app.
+      if (request.mode === 'navigate') {
+        try {
+          const response = await fetch(request);
+
+          if (response.ok) {
+            await cache.put('./index.html', response.clone());
+            return response;
+          }
+        } catch (error) {
+          // Use the cached page while offline.
+        }
+
+        return (
+          await cache.match(request) ||
+          await cache.match('./index.html') ||
+          await cache.match('./')
+        ) || new Response(
+          'অফলাইনে অ্যাপ পাওয়া যাচ্ছে না। প্রথমে ইন্টারনেট দিয়ে অ্যাপটি খুলুন।',
+          {
+            status: 503,
+            headers: {
+              'Content-Type': 'text/plain; charset=utf-8'
+            }
+          }
+        );
       }
 
-      // ক্যাশে না থাকলে নেটওয়ার্ক থেকে আনবে
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
+      // Other assets: cache first.
+      const cached = await cache.match(request, {
+        ignoreSearch: true
+      });
 
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
+      if (cached) return cached;
+
+      try {
+        const response = await fetch(request);
+
+        if (response.ok && response.type === 'basic') {
+          await cache.put(request, response.clone());
+        }
 
         return response;
-      }).catch(() => {
-        // পুরোপুরি অফলাইনে থাকলে মূল index.html লোড করবে
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html') || caches.match('./');
-        }
-      });
-    })
+      } catch (error) {
+        return new Response('ফাইলটি অফলাইনে পাওয়া যায়নি।', {
+          status: 503
+        });
+      }
+    })()
   );
 });

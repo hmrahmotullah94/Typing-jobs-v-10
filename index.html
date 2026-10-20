@@ -183,7 +183,7 @@ textarea#input-area{
 
         font-size:20px; !important;
 
-        padding:18px; !important;
+        padding:5px; !important;
 
         overflow-y:auto;
 
@@ -197,9 +197,9 @@ textarea#input-area{
 
         min-height:120px; !important;
 
-        font-size:18px; !important;
+        font-size:20px; !important;
 
-        padding:18px; !important;
+        padding:5px; !important;
 
     }
 
@@ -294,7 +294,7 @@ textarea#input-area{
 @media screen and (orientation: landscape){
 
     body{
-        padding:10px;
+        padding:5px;
     }
 
 
@@ -401,7 +401,7 @@ body{
 
     margin:auto;
 
-    padding:15px;
+    padding:10px;
 
     background:var(--card-bg);
 
@@ -551,7 +551,7 @@ textarea{
     border-radius:15px;
 
 
-    padding:25px;
+    padding:5px;
 
 
     min-height:130px;
@@ -566,7 +566,7 @@ textarea{
     font-size:20px;
 
 
-    line-height:1.8;
+    line-height:1.3;
 
 
     word-break:break-word;
@@ -625,7 +625,7 @@ textarea#input-area{
     height:130px;
 
 
-    padding:25px;
+    padding:5px;
 
 
     border:
@@ -639,10 +639,11 @@ textarea#input-area{
     resize:none;
 
 
-    font-size:18px;
+    font-size:20px;
 
 
-    line-height:1.8;
+    line-height:1.3;
+    word-break:break-word;
 
 
     background:var(--card-bg);
@@ -667,7 +668,7 @@ textarea#input-area{
 
     gap:10px;
 
-    margin-top:20px;
+    margin-top:10px;
 
 }
 
@@ -680,7 +681,7 @@ textarea#input-area{
 
     color:white;
 
-    padding:12px;
+    padding:5px;
 
     border-radius:12px;
 
@@ -996,7 +997,7 @@ spellcheck="false"></textarea>
         <div class="stat-box">সময় <span id="st-time">০</span></div>
         <div class="stat-box">WPM <span id="st-wpm">০</span></div>
         <div class="stat-box">নির্ভুলতা <span id="st-acc">১০০%</span></div>
-        <div class="stat-box">ভুল <span id="st-wrong">০%</span></div>
+        <div class="stat-box">মোট শব্দ<span id="st-wrong">0</span></div>
     </div>
 </div>
 
@@ -1660,7 +1661,7 @@ wrongCount++;
         if(typed.length > 0) {
             document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
             // 👇 লাইভ ভুল % দেখানোর লাইন
-    document.getElementById('st-wrong').innerText = Math.round((wrongCount/typed.length)*100) + "%";
+    document.getElementById('st-wrong').innerText = Math.round((typed.length/5)) ;
 
         }
 

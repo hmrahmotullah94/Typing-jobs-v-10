@@ -61,6 +61,30 @@
 }
         .sidebar { position: fixed; top: 0; right: -350px; width: 300px; height: 100%; background: var(--card-bg); box-shadow: -10px 0 30px rgba(0,0,0,0.3); transition: 0.4s; z-index: 1000; padding: 25px; overflow-y: auto; }
         .sidebar.active { right: 0; }
+        /* ব্যাকগ্রাউন্ড ওভারলে */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1px); /* হালকা ব্লার এফেক্ট (অপশনাল) */
+    visibility: hidden;
+    opacity: 0;
+    
+    transition: 0.3s ease;
+    z-index: 1000; /* সাইডবারের ঠিক নিচে থাকবে */
+    padding: 25px; 
+    overflow-y: auto; 
+    will-change: right;
+}
+
+/* ওভারলে সক্রিয় হলে দেখাবে */
+.sidebar-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
         .toggle-btn { position: fixed; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); width: 45px; height: 45px; padding: 0; border: 0; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-size: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
         .stats { display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; }
         .stat-box { flex: 1; background: var(--primary); color: white; padding: 10px; border-radius: 10px; text-align: center; }
@@ -921,8 +945,11 @@ textarea#input-area{
     </div>
 </div>
 
-<button class="toggle-btn" type="button" aria-label="সেটিংস খুলুন বা বন্ধ করুন" aria-controls="side" onclick="document.getElementById('side').classList.toggle('active')">⚙</button>
+<!-- সেটিং বাটন -->
+<button class="toggle-btn" type="button" aria-label="সেটিংস খুলুন বা বন্ধ করুন" aria-controls="side" onclick="toggleSidebar()">⚙</button>
 
+<!-- ব্যাকগ্রাউন্ড ওভারলে -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="side">
     <h3 style="text-align: center;">সেটিংস</h3>
     
@@ -1754,6 +1781,14 @@ wrongCount++;
     }
 
     window.addEventListener('load', () => { renderC(); initApp(); });
+    // সাইডবার টগল করার মূল ফাংশন
+function toggleSidebar() {
+    const sidebar = document.getElementById('side'); 
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    if (sidebar) sidebar.classList.toggle('active');
+    if (overlay) overlay.classList.toggle('active');
+}
 
    function toggleTestMode(){
 

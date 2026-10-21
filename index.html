@@ -1718,7 +1718,8 @@ wrongCount++;
     function saveC() { const v = document.getElementById('c-in').value.trim(); if(v) { customs.push(v); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); document.getElementById('c-in').value=""; renderC(); initApp(); } }
     function renderC() { document.getElementById('c-list').innerHTML = customs.map((x,i)=>`<div style="font-size:11px; background:rgba(0,0,0,0.05); padding:6px; margin-top:5px; border-radius:4px; display:flex; justify-content:space-between;"><span>${x.slice(0,20)}...</span><b style="color:red; cursor:pointer;" onclick="delC(${i})">মুছুন</b></div>`).join(''); }
     function delC(i) { customs.splice(i,1); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); renderC(); initApp(); }
-    function updateFSize(v) { document.getElementById('display-text').style.fontSize = v + "px"; }
+    function updateFSize(v) { document.getElementById('display-text').style.fontSize = v + "px"; //টাইপিং ইনপুট বা টেক্সটএরিয়ার ফন্ট সাইজ পরিবর্তন 
+                             document.getElementById('input-area').style.fontSize = v + "px";}
     function updateFStyle(v) { document.getElementById('display-text').style.fontFamily = v + ", sans-serif"; document.getElementById('input-area').style.fontFamily = v + ", sans-serif"; }
     function updateTheme(v) { document.documentElement.setAttribute('data-theme', v); }
 

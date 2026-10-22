@@ -1741,16 +1741,144 @@ wrongCount++;
     }
 
     document.getElementById('res-data').innerHTML =
-    `
-    গতি: <b>${wpm} WPM</b><br>
-    নির্ভুলতা: <b>${acc}</b><br>
-    সময়: <b>${time} সেকেন্ড</b><br>
-    ভুল: <b>${wrongCount}</b> টি<br>
-    Wrong: <b>${wrongPercent}%</b>
-    `;
+input.addEventListener('keydown', function(e) {
+        // Alt + C চাপলে ইনপুট ফিল্ড থেকেও যেন টাইপ শেষ হয়ে রেজাল্ট দেখায়
+        if (e.altKey && (e.key === 'c' || e.key === 'C' || e.code === 'KeyC' || e.key === 'ছ')) {
+            e.preventDefault();
+            if (!done) {
+                finish();
+            }
+            return;
+        }
 
-    document.getElementById('modal').style.display = "flex";
-}
+        if (e.key === 'Enter') {
+        // 🟢 পেপার মোড অন থাকলে এন্টার চাপলে ডিফল্টভাবে নতুন লাইনে যাবে, কোনো লজিক কাজ করবে না
+            if (isPaperMode) {
+                return; 
+            }
+            e.preventDefault();
+            if (done) nextL();
+            else if (!isPaperMode && input.value.length >= chars.length) finish();
+        }
+    });
+
+    function updateTyping() {
+        const typedRaw = input.value.normalize('NFC');
+        const typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
+        let correct = 0;
+        wrongCount = 0;
+
+        const maxLen = Math.max(typed.length + 2, chars.length);
+        const displayDiv = document.getElementById('display-text');
+
+        for(let i = 0; i < maxLen; i++) {
+            const el = document.getElementById(`s-${i}`);
+            if(!el) continue;
+
+            const targetChar = chars[i] ? chars[i].normalize('NFC') : null;
+
+            if(i < typed.length) {
+                if(typed[i] === targetChar){
+                    correct++;
+                    if(testMode){
+                        el.className="char";
+                    }else{
+                        el.className="char correct";
+                    }
+                }else{
+                    wrongCount++;
+                    if(testMode){
+                        el.className="char";
+                    }else{
+                        el.className="char wrong";
+                    }
+                }
+            } else {
+                if (i === typed.length) {
+                    if(el.className !== "char current") el.className = "char current";
+                } else {
+                    if(el.className !== "char") el.className = "char";
+                }
+            }
+        }
+
+        // এক্সট্রা টাইপিং এবং সাধারণ টাইপিং উভয়ের জন্যই স্ক্রোল ট্র্যাকিং
+        if (done || typed.length >= chars.length) {
+            displayDiv.scrollTop = displayDiv.scrollHeight;
+        } else {
+            const currentEl = document.getElementById(`s-${typed.length}`);
+            if (currentEl) {
+                const containerHeight = displayDiv.clientHeight;
+                const elemTop = currentEl.offsetTop;
+                const elemHeight = currentEl.offsetHeight;
+
+                if ((elemTop + elemHeight) > (displayDiv.scrollTop + containerHeight) || elemTop < displayDiv.scrollTop) {
+                    displayDiv.scrollTop = elemTop - (containerHeight / 2) + (elemHeight / 2);
+                }
+            }
+        }
+
+        if(typed.length > 0) {
+            document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
+            document.getElementById('st-wrong').innerText = Math.round((typed.length/5)) ;
+        }
+
+        const isLastCharComplete = (typed.length > chars.length) || 
+                                   (typed[typed.length - 1] === chars[chars.length - 1]);
+
+        if (!isPaperMode) {
+            if (typed.length >= chars.length && !done && chars.length > 0 && !state.gPressed && state.pendingKar === "" && isLastCharComplete) {
+                setTimeout(finish, 100);
+            }
+        }
+    }
+
+    function finish() {
+        done = true;
+        active = false;
+        clearInterval(timer);
+        
+        // টাইপ করা ক্যারেক্টার ও টেক্সট সঠিকভাবে পড়া
+        const typedRaw = input.value.normalize('NFC');
+        let typed = [];
+        try {
+            typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
+        } catch(e) {
+            typed = typedRaw.split('');
+        }
+
+        // ওয়ার্ড কাউন্ট বের করা
+        const wordCount = typedRaw.trim().length > 0 ? typedRaw.trim().split(/\s+/).filter(w => w.length > 0).length : 0;
+
+        const wpm = document.getElementById('st-wpm') ? document.getElementById('st-wpm').innerText : "0";
+        const acc = document.getElementById('st-acc') ? document.getElementById('st-acc').innerText : "100%";
+
+        let wrongPercent = 0;
+        // পেপার মোড অন থাকলে টাইপ করা অক্ষরের ভিত্তিতে পার্সেন্টেজ হিসাব
+        const totalCharsForCalc = isPaperMode ? typed.length : (chars.length > 0 ? chars.length : typed.length);
+
+        if(totalCharsForCalc > 0){
+            wrongPercent = Math.round((wrongCount / totalCharsForCalc) * 100);
+        }
+        
+        const modal = document.getElementById('modal');
+        const resData = document.getElementById('res-data');
+
+        if (resData) {
+            resData.innerHTML = `
+                গতি: <b>${wpm} WPM</b><br>
+                মোট শব্দ (Word Count): <b>${wordCount} টি</b><br>
+                নির্ভুলতা: <b>${acc}</b><br>
+                সময়: <b>${time} সেকেন্ড</b><br>
+                ভুল: <b>${wrongCount}</b> টি<br>
+                Wrong: <b>${wrongPercent}%</b>
+            `;
+        }
+
+        if (modal) {
+            modal.style.display = "flex";
+        }
+    }
 
     function nextL() {
         document.getElementById('modal').style.display = "none";
@@ -1760,14 +1888,21 @@ wrongCount++;
         input.focus();
     }
 
-    function resetApp() { clearInterval(timer); time = 0; active = false; done = false;
-    wrongCount = 0;
-    input.value = ""; state.pendingKar = ""; state.gPressed = false; document.getElementById('st-time').innerText = "0"; document.getElementById('st-wpm').innerText = "0"; document.getElementById('st-acc').innerText = "100%"; document.getElementById('display-text').scrollTop = 0; input.focus(); }
+    function resetApp() { 
+        clearInterval(timer); time = 0; active = false; done = false;
+        wrongCount = 0;
+        input.value = ""; state.pendingKar = ""; state.gPressed = false; 
+        document.getElementById('st-time').innerText = "0"; 
+        document.getElementById('st-wpm').innerText = "0"; 
+        document.getElementById('st-acc').innerText = "100%"; 
+        document.getElementById('display-text').scrollTop = 0; 
+        input.focus(); 
+    }
+
     function saveC() { const v = document.getElementById('c-in').value.trim(); if(v) { customs.push(v); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); document.getElementById('c-in').value=""; renderC(); initApp(); } }
     function renderC() { document.getElementById('c-list').innerHTML = customs.map((x,i)=>`<div style="font-size:11px; background:rgba(0,0,0,0.05); padding:6px; margin-top:5px; border-radius:4px; display:flex; justify-content:space-between;"><span>${x.slice(0,20)}...</span><b style="color:red; cursor:pointer;" onclick="delC(${i})">মুছুন</b></div>`).join(''); }
     function delC(i) { customs.splice(i,1); localStorage.setItem('rah_v11_cust', JSON.stringify(customs)); renderC(); initApp(); }
-    function updateFSize(v) { document.getElementById('display-text').style.fontSize = v + "px"; //টাইপিং ইনপুট বা টেক্সটএরিয়ার ফন্ট সাইজ পরিবর্তন 
-                             document.getElementById('input-area').style.fontSize = v + "px";}
+    function updateFSize(v) { document.getElementById('display-text').style.fontSize = v + "px"; document.getElementById('input-area').style.fontSize = v + "px"; }
     function updateFStyle(v) { document.getElementById('display-text').style.fontFamily = v + ", sans-serif"; document.getElementById('input-area').style.fontFamily = v + ", sans-serif"; }
     function updateTheme(v) { document.documentElement.setAttribute('data-theme', v); }
 
@@ -1779,9 +1914,18 @@ wrongCount++;
         document.getElementById('st-wpm').innerText = wpm >= 0 ? wpm : 0;
     }
 
+    // গ্লোবাল কিবোর্ড শর্টকাট (Alt + C)
     window.addEventListener('keydown', (e) => {
+        if (e.altKey && (e.key === 'c' || e.key === 'C' || e.code === 'KeyC' || e.key === 'ছ')) {
+            e.preventDefault();
+            if (!done) {
+                finish();
+            }
+            return;
+        }
+
         const modal = document.getElementById('modal');
-        if (done && modal.style.display === "flex") {
+        if (done && modal && modal.style.display === "flex") {
             if (e.key === 'Enter') { e.preventDefault(); nextL(); }
             else if (e.key === 'Escape') { e.preventDefault(); modal.style.display = "none"; fullResetCurrent(); }
             else { modal.style.display = "none"; input.focus(); }
@@ -1801,31 +1945,88 @@ wrongCount++;
         input.focus();
     }
 
+    function toggleSidebar() {
+        const sidebar = document.getElementById('side'); 
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        if (sidebar) sidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    }
+
     window.addEventListener('load', () => { renderC(); initApp(); });
 
-// শিট দেখে টাইপ করার মোড (Paper Sheet Typing Mode) টগল ফাংশন
-let isPaperMode = false;
-function togglePaperMode() {
-    isPaperMode = !isPaperMode;
-    const btn = document.getElementById("paperBtn");
-    const body = document.body;
+    let isPaperMode = false;
+    function togglePaperMode() {
+        isPaperMode = !isPaperMode;
+        const btn = document.getElementById("paperBtn");
+        const body = document.body;
 
-    if (isPaperMode) {
-        body.classList.add('paper-mode-active');
-        btn.innerText = "শিট দেখে টাইপ: ON";
-        btn.style.background = "#c62828"; // অন হলে লাল দেখাবে
-    } else {
-        body.classList.remove('paper-mode-active');
-        btn.innerText = "শিট দেখে টাইপ: OFF";
-        btn.style.background = "#00897b"; // অফ হলে টিল/সবুজ দেখাবে
+        if (isPaperMode) {
+            body.classList.add('paper-mode-active');
+            if(btn) {
+                btn.innerText = "শিট দেখে টাইপ: ON";
+                btn.style.background = "#c62828";
+            }
+        } else {
+            body.classList.remove('paper-mode-active');
+            if(btn) {
+                btn.innerText = "শিট দেখে টাইপ: OFF";
+                btn.style.background = "#00897b";
+            }
+        }
+        
+        if (typeof fullResetCurrent === "function") {
+            fullResetCurrent();
+        } else {
+            resetApp();
+        }
+
+        const inputArea = document.getElementById("input-area");
+        if (inputArea) inputArea.focus();
     }
+
+    function toggleTestMode(){
+        testMode = !testMode;
+        const btn = document.getElementById("testBtn");
+
+        if(testMode){
+            if(btn) {
+                btn.innerText="Test ON";
+                btn.style.background="#c62828";
+            }
+        }else{
+            if(btn) {
+                btn.innerText="Test OFF";
+                btn.style.background="#00897b";
+            }
+        }
+    } 
+
+    function toggleBijoyMode() {
+        isBijoyActive = !isBijoyActive;
+        const btn = document.getElementById("bijoyBtn");
+        
+        if (isBijoyActive) {
+            if(btn) {
+                btn.innerText = "বিজয় ON";
+                btn.style.background = "#2e7d32";
+            }
+        } else {
+            if(btn) {
+                btn.innerText = "বিজয় OFF (ইউনিকোদ/অভ্র)";
+                btn.style.background = "#c62828";
+            }
+        }
+    
+
+    
 
     // টাইপিং ইনপুট বক্সে অটো ফোকাস করা
     const inputArea = document.getElementById("input-area");
     if (inputArea) inputArea.focus();
 }
-   
-    // সাইডবার টগল করার মূল ফাংশন
+    
+// সাইডবার টগল করার মূল ফাংশন
 function toggleSidebar() {
     const sidebar = document.getElementById('side'); 
     const overlay = document.querySelector('.sidebar-overlay');
@@ -1833,43 +2034,35 @@ function toggleSidebar() {
     if (sidebar) sidebar.classList.toggle('active');
     if (overlay) overlay.classList.toggle('active');
 }
-
-   function toggleTestMode(){
-
-    testMode = !testMode;
-
-    const btn = document.getElementById("testBtn");
-
-    if(testMode){
-
-        btn.innerText="Test ON";
-        btn.style.background="#c62828";
-
-    }else{
-
-        btn.innerText="Test OFF";
-        btn.style.background="#00897b";
-
+    function fullResetCurrent() {
+        input.value = ""; done = false; active = false; clearInterval(timer); time = 0; state.gPressed = false; state.pendingKar = "";
+        document.getElementById('st-time').innerText = "0"; document.getElementById('st-wpm').innerText = "0"; document.getElementById('st-acc').innerText = "100%";
+        document.getElementById('display-text').scrollTop = 0;
+        chars.forEach((c, i) => {
+            const el = document.getElementById(`s-${i}`);
+            if (el) el.className = (i === 0) ? "char current" : "char";
+        });
+        input.focus();
     }
     
-    
+        // পপ-আপের ব্যাকগ্রাউন্ডে (বাইরে) ক্লিক করলে পপ-আপ চলে যাবে এবং অ্যাপ রিসেট হবে
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('modal');
+        // যদি মোডাল ওপেন থাকে এবং ইউজার মোডালের ঠিক বাইরের কালো/ঝাপসা ব্যাকগ্রাউন্ডে ক্লিক করেন
+        if (modal && modal.style.display === "flex" && e.target === modal) {
+            modal.style.display = "none";
+            
+        }
+    });
 
-} 
-function toggleBijoyMode() {
-    isBijoyActive = !isBijoyActive;
-    const btn = document.getElementById("bijoyBtn");
-    
-    if (isBijoyActive) {
-        btn.innerText = "বিজয় ON";
-        btn.style.background = "#2e7d32"; // সবুজ রঙ
-    } else {
-        btn.innerText = "বিজয় OFF (ইউনিকোড/অভ্র)";
-        btn.style.background = "#c62828"; // লাল রঙ
-    }
-}
- 
 
+    window.addEventListener('load', () => { renderC(); initApp(); });
+    
+    
+    
+    
     </script>
+
 
 
 <script src="./app.js" defer></script>

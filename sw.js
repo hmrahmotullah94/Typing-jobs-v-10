@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'type-rahmot-v10.8';
+const CACHE_NAME = 'type-rahmot-v10.9';
 
 const ASSETS_TO_CACHE = [
   './',

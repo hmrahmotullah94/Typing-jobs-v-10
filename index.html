@@ -1626,122 +1626,6 @@ let wrongCount = 0;
     });
 
     input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (done) nextL();
-            else if (input.value.length >= chars.length) finish();
-        }
-    });
-
-            function updateTyping() {
-        const typedRaw = input.value.normalize('NFC');
-        const typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
-        let correct = 0;
-        wrongCount = 0;
-
-        const maxLen = Math.max(typed.length + 2, chars.length);
-        const displayDiv = document.getElementById('display-text');
-
-        for(let i = 0; i < maxLen; i++) {
-            const el = document.getElementById(`s-${i}`);
-            if(!el) continue;
-
-            const targetChar = chars[i] ? chars[i].normalize('NFC') : null;
-
-            if(i < typed.length) {
-                if(typed[i] === targetChar){
-
-    correct++;
-
-    if(testMode){
-
-        el.className="char";
-
-    }else{
-
-        el.className="char correct";
-
-    }
-
-
-}else{
-
-wrongCount++;
-    if(testMode){
-
-        el.className="char";
-
-    }else{
-
-        el.className="char wrong";
-
-    }
-
-}
-            } else {
-                if (i === typed.length) {
-                    if(el.className !== "char current") el.className = "char current";
-                } else {
-                    if(el.className !== "char") el.className = "char";
-                }
-            }
-        }
-
-        // এক্সট্রা টাইপিং এবং সাধারণ টাইপিং উভয়ের জন্যই নিখুঁত স্ক্রোল ট্র্যাকিং
-        if (done || typed.length >= chars.length) {
-            // প্যারাগ্রাফ শেষ বা এক্সট্রা টাইপ করার সময় সবসময় স্ক্রোল একদম নিচে লক থাকবে
-            displayDiv.scrollTop = displayDiv.scrollHeight;
-        } else {
-            // স্বাভাবিক টাইপিংয়ের সময় কারেন্ট এলিমেন্ট ট্র্যাক করবে
-            const currentEl = document.getElementById(`s-${typed.length}`);
-            if (currentEl) {
-                const containerHeight = displayDiv.clientHeight;
-                const elemTop = currentEl.offsetTop;
-                const elemHeight = currentEl.offsetHeight;
-
-                // কারেন্ট ক্যারেক্টারটি যদি স্ক্রিনের বাইরে চলে যেতে নেয়, তখনই স্ক্রোল পজিশন আপডেট হবে
-                if ((elemTop + elemHeight) > (displayDiv.scrollTop + containerHeight) || elemTop < displayDiv.scrollTop) {
-                    displayDiv.scrollTop = elemTop - (containerHeight / 2) + (elemHeight / 2);
-                }
-            }
-        }
-
-        if(typed.length > 0) {
-            document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
-            // 👇 লাইভ ভুল % দেখানোর লাইন
-    document.getElementById('st-wrong').innerText = Math.round((typed.length/5)) ;
-
-        }
-
-                // শেষের অক্ষরটি সম্পূর্ণ টাইপ হয়েছে কিনা এবং যুক্তবর্ণের মোডে (gPressed / pendingKar) আছে কিনা তা যাচাই
-        const isLastCharComplete = (typed.length > chars.length) || 
-                                   (typed[typed.length - 1] === chars[chars.length - 1]);
-
-        if (typed.length >= chars.length && !done && chars.length > 0 && !state.gPressed && state.pendingKar === "" && isLastCharComplete) {
-            setTimeout(finish, 100);
-        }
-
-    }
-
-
-
-    function finish() {
-
-    done = true;
-    active = false;
-    clearInterval(timer);
-
-    const wpm = document.getElementById('st-wpm').innerText;
-    const acc = document.getElementById('st-acc').innerText;
-
-    let wrongPercent = 0;
-
-    if(chars.length > 0){
-        wrongPercent = Math.round((wrongCount / chars.length) * 100);
-    }
-
-    document.getElementById('res-data').innerHTML =
-input.addEventListener('keydown', function(e) {
         // Alt + C চাপলে ইনপুট ফিল্ড থেকেও যেন টাইপ শেষ হয়ে রেজাল্ট দেখায়
         if (e.altKey && (e.key === 'c' || e.key === 'C' || e.code === 'KeyC' || e.key === 'ছ')) {
             e.preventDefault();
@@ -2056,10 +1940,11 @@ function toggleSidebar() {
     });
 
 
+    window.addEventListener('load', () => { renderC(); initApp(); });
+    
     
     
     </script>
-
 
 
 <script src="./app.js" defer></script>

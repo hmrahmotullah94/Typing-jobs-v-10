@@ -85,6 +85,21 @@
     visibility: visible;
     opacity: 1;
 }
+        /* শিট দেখে টাইপ করার মোডের জন্য স্টাইল */
+body.paper-mode-active #display-text {
+    display: none !important; /* প্যারাগ্রাফ বক্স লুকিয়ে ফেলবে */
+}
+
+body.paper-mode-active .typing-area {
+    grid-template-columns: 1fr !important;
+    display: block !important;
+}
+
+body.paper-mode-active textarea#input-area {
+    height: 280px !important; /* টাইপিং বক্সকে পুরো ডিসপ্লে জুড়েই বড় করবে */
+    min-height: 200px !important;
+    width: 100% !important;
+}
         .toggle-btn { position: fixed; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); width: 45px; height: 45px; padding: 0; border: 0; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; font-size: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
         .stats { display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; }
         .stat-box { flex: 1; background: var(--primary); color: white; padding: 10px; border-radius: 10px; text-align: center; }
@@ -958,6 +973,12 @@ textarea#input-area{
     <button id="bijoyBtn" onclick="toggleBijoyMode()" style="width:100%; background:#2e7d32; color:white; font-weight:bold; margin-bottom:15px; cursor:pointer;">
         বিজয় টাইপিং: ON
     </button>
+
+    <!-- নতুন: শিট দেখে টাইপ করার বাটন -->
+<label>ফিজিক্যাল শিট টাইপিং:</label>
+<button id="paperBtn" onclick="togglePaperMode()" style="width:100%; background:#00897b; color:white; font-weight:bold; margin-bottom:15px; cursor:pointer;">
+    শিট দেখে টাইপ: OFF
+</button>
     
     <label>ফন্ট স্টাইল:</label>
     <select id="f-style" onchange="updateFStyle(this.value)" style="width:100%; margin-bottom:15px;">
@@ -1781,6 +1802,29 @@ wrongCount++;
     }
 
     window.addEventListener('load', () => { renderC(); initApp(); });
+
+// শিট দেখে টাইপ করার মোড (Paper Sheet Typing Mode) টগল ফাংশন
+let isPaperMode = false;
+function togglePaperMode() {
+    isPaperMode = !isPaperMode;
+    const btn = document.getElementById("paperBtn");
+    const body = document.body;
+
+    if (isPaperMode) {
+        body.classList.add('paper-mode-active');
+        btn.innerText = "শিট দেখে টাইপ: ON";
+        btn.style.background = "#c62828"; // অন হলে লাল দেখাবে
+    } else {
+        body.classList.remove('paper-mode-active');
+        btn.innerText = "শিট দেখে টাইপ: OFF";
+        btn.style.background = "#00897b"; // অফ হলে টিল/সবুজ দেখাবে
+    }
+
+    // টাইপিং ইনপুট বক্সে অটো ফোকাস করা
+    const inputArea = document.getElementById("input-area");
+    if (inputArea) inputArea.focus();
+}
+   
     // সাইডবার টগল করার মূল ফাংশন
 function toggleSidebar() {
     const sidebar = document.getElementById('side'); 

@@ -1703,9 +1703,11 @@ let wrongCount = 0;
         }
 
         if(typed.length > 0) {
-            document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
-            document.getElementById('st-wrong').innerText = Math.round((typed.length/5)) ;
-        }
+    document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
+    // typedRaw.length ব্যবহার করলে আকার, একার, হসন্ত, স্পেস সহ সব ক্যারেক্টার ৫ এ ১ গণনায় আসবে
+    document.getElementById('st-wrong').innerText = Math.floor(typedRaw.length / 5);
+}
+
 
         const isLastCharComplete = (typed.length > chars.length) || 
                                    (typed[typed.length - 1] === chars[chars.length - 1]);
@@ -1731,8 +1733,8 @@ let wrongCount = 0;
             typed = typedRaw.split('');
         }
 
-        // ওয়ার্ড কাউন্ট বের করা
-        const wordCount = typedRaw.trim().length > 0 ? typedRaw.trim().split(/\s+/).filter(w => w.length > 0).length : 0;
+        // typedRaw.length দিয়ে বাংলা আকার/একার সহ মূল ক্যারেক্টার গণনা
+const wordCount = Math.floor(typedRaw.length / 5);
 
         const wpm = document.getElementById('st-wpm') ? document.getElementById('st-wpm').innerText : "0";
         const acc = document.getElementById('st-acc') ? document.getElementById('st-acc').innerText : "100%";
@@ -1791,12 +1793,14 @@ let wrongCount = 0;
     function updateTheme(v) { document.documentElement.setAttribute('data-theme', v); }
 
     function calculateWPM() {
-        if (time <= 0) return;
-        const typedRaw = input.value.normalize('NFC');
-        const typed = Array.from(segmenter.segment(typedRaw)).map(s => s.segment);
-        const wpm = Math.round((typed.length / 5) / (time / 60));
-        document.getElementById('st-wpm').innerText = wpm >= 0 ? wpm : 0;
-    }
+    if (time <= 0) return;
+    const typedRaw = input.value.normalize('NFC');
+    // typedRaw.length দিয়ে র ক্যারেক্টার গণনা করে WPM বের করা
+    const wordsTyped = typedRaw.length / 5;
+    const wpm = Math.round(wordsTyped / (time / 60));
+    document.getElementById('st-wpm').innerText = wpm >= 0 ? wpm : 0;
+}
+
 
     // গ্লোবাল কিবোর্ড শর্টকাট (Alt + C)
     window.addEventListener('keydown', (e) => {

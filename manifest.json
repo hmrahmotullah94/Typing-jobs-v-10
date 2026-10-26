@@ -1,6 +1,6 @@
 {
-  "name": "Type Rahmot - টাইপিং প্র্যাকটিস",
-  "short_name": "Type Rahmot",
+  "name": "Typing Jobs - টাইপিং প্র্যাকটিস",
+  "short_name": "Typing Jobs",
   "description": "বাংলা ও ইংরেজি টাইপিং অনুশীলন করার এবং স্পিড বাড়ানোর জন্য একটি সহজ ও অফলাইন টাইপিং অ্যাপ।",
   "start_url": "./index.html",
   "display": "standalone",

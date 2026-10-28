@@ -1618,7 +1618,15 @@ let wrongCount = 0;
             active = true;
             timer = setInterval(() => {
                 time++;
-                document.getElementById('st-time').innerText = time;
+
+                // নতুন যোগ করা লাইন:
+    let m = Math.floor(time / 60);
+    let s = time % 60;
+    let timeStr = m > 0 ? `${m} m ${s} s` : `${s} s`;
+    
+    document.getElementById('st-time').innerText = timeStr; // এখানে timeStr বসানো হয়েছে
+                
+                
                 calculateWPM();
             }, 1000);
         }
@@ -1746,6 +1754,11 @@ const wordCount = Math.floor(typedRaw.length / 5);
         if(totalCharsForCalc > 0){
             wrongPercent = Math.round((wrongCount / totalCharsForCalc) * 100);
         }
+
+        // 🟢 নতুন যোগ করা মিনিট ও সেকেন্ড ফরম্যাট লজিক
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        let timeStr = m > 0 ? `${m} মিনিট ${s} সেকেন্ড` : `${s} সেকেন্ড`;
         
         const modal = document.getElementById('modal');
         const resData = document.getElementById('res-data');
@@ -1755,7 +1768,7 @@ const wordCount = Math.floor(typedRaw.length / 5);
                 গতি: <b>${wpm} WPM</b><br>
                 মোট শব্দ (Word Count): <b>${wordCount} টি</b><br>
                 নির্ভুলতা: <b>${acc}</b><br>
-                সময়: <b>${time} সেকেন্ড</b><br>
+                সময়: <b>${timeStr}</b><br> <!-- এখানে সময় মিনিট-সেকেন্ড আকারে দেখাবে -->
                 ভুল: <b>${wrongCount}</b> টি<br>
                 Wrong: <b>${wrongPercent}%</b>
             `;

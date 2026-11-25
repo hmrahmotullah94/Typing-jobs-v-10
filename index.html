@@ -1710,11 +1710,15 @@ let wrongCount = 0;
             }
         }
 
-        if(typed.length > 0) {
-    document.getElementById('st-acc').innerText = Math.round((correct/typed.length)*100) + "%";
-    // typedRaw.length ব্যবহার করলে আকার, একার, হসন্ত, স্পেস সহ সব ক্যারেক্টার ৫ এ ১ গণনায় আসবে
-    document.getElementById('st-wrong').innerText = Math.floor(typedRaw.length / 5);
-}
+                if (typed.length > 0) {
+            if (!isPaperMode) {
+                document.getElementById('st-acc').innerText = Math.round((correct / typed.length) * 100) + "%";
+            } else {
+                document.getElementById('st-acc').innerText = "∞";
+            }
+            // শিট মোড চালু থাকলেও ওয়ার্ড কাউন্টার সবসময় চালু থাকবে
+            document.getElementById('st-wrong').innerText = Math.floor(typedRaw.length / 5);
+        }
 
 
         const isLastCharComplete = (typed.length > chars.length) || 
